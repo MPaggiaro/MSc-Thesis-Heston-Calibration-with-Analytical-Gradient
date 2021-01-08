@@ -22,13 +22,3 @@ utility
 complex
 -
 
-/mnt/c/code/Thesis/ex1b/main.cpp
-iostream
--
-ctime
--
-vector
--
-EuropeanOption.h
-/mnt/c/code/Thesis/ex1b/EuropeanOption.h
-

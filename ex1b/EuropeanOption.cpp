@@ -126,14 +126,14 @@ std::vector<std::complex<double>> EuropeanOption::JacCharFunc(std::complex<doubl
         pB_pkappa = I / (sigma * u) * pB_prho + B * (T / 2),
         pd_psigma = (rho / sigma - 1.0 / ksi) * pd_prho + sigma * pow(u, 2) / d,
         pA1_psigma = (pow(u, 2) + I * u) * (T / 2) * pd_psigma * cosh(d * (T / 2)),
-        pA2_psigma = rho / sigma * pA2_prho - (2.0 + T * ksi) / (v0 * T * ksi * I * u) * pA1_prho + ksi * T * A1 / (2 * v0),
+        pA2_psigma = rho / sigma * pA2_prho - (2.0 + T * ksi) / (v0 * T * ksi * I * u) * pA1_prho + sigma * T * A1 / (2 * v0),
         pA_psigma = 1.0 / A2 * pA1_psigma - A / A2 * pA2_psigma;
 
 
     const std::complex<double> h1 = - A/v0,
         h2 = 2*kappa/sigma2*D - kappa*rho*T*I*u/sigma,
         h3 = - pA_prho + 2 * kappa * theta / (sigma2 * d) * (pd_prho - d / A2 * pA2_prho) - kappa * theta * T * I * u / sigma,
-        h4 = 1.0 / (sigma*I*u) * pA2_prho + 2 * theta / sigma2 * D + 2 * kappa * theta / (sigma2 * B) * pB_pkappa
+        h4 = 1.0 / (sigma*I*u) * pA_prho + 2 * theta / sigma2 * D + 2 * kappa * theta / (sigma2 * B) * pB_pkappa
              - theta*rho*T*I*u/sigma,
         h5 = - pA_psigma - 4 * kappa * theta / pow(sigma, 3) * D + 2 * kappa * theta / (sigma2 * d)
                                                                    * (pd_psigma - d / A2 * pA2_psigma) + kappa * theta * rho * T * I * u / sigma2;

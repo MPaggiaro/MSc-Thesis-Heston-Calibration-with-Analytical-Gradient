@@ -1,0 +1,26 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/code/Thesis/trycui/main.cpp
+vector
+-
+complex
+-
+stdio.h
+-
+math.h
+-
+iostream
+-
+ctime
+-
+levmar/levmar.h
+-
+iomanip
+-
+
