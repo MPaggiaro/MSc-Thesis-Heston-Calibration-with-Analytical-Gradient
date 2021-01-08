@@ -1,0 +1,4 @@
+C:/code/levmar-calib/out/build/x64-Debug (impostazione predefinita)/CMakeFiles/levmar.dir
+C:/code/levmar-calib/out/build/x64-Debug (impostazione predefinita)/CMakeFiles/rebuild_cache.dir
+C:/code/levmar-calib/out/build/x64-Debug (impostazione predefinita)/CMakeFiles/lmdemo.dir
+C:/code/levmar-calib/out/build/x64-Debug (impostazione predefinita)/CMakeFiles/edit_cache.dir
