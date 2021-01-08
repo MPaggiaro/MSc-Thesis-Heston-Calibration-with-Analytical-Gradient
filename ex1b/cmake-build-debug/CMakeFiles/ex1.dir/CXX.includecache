@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/code/Thesis/ex1b/EuropeanOption.cpp
+complex
+-
+boost/math/quadrature/gauss.hpp
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/ex1b/EuropeanOption.h
+
+/mnt/c/code/Thesis/ex1b/EuropeanOption.h
+string
+-
+utility
+-
+complex
+-
+
+/mnt/c/code/Thesis/ex1b/main.cpp
+iostream
+-
+ctime
+-
+vector
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/ex1b/EuropeanOption.h
+
