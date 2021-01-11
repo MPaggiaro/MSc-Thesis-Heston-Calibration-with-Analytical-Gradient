@@ -3,4 +3,4 @@ project(ex1)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(ex1 main.cpp EuropeanOption.cpp EuropeanOption.h)
+add_executable(ex1 main.cpp EuropeanOption.cpp EuropeanOption.h Calibration.cpp Calibration.h Market.cpp Market.h)

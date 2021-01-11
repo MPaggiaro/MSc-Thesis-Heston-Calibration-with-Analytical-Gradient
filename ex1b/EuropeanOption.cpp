@@ -8,18 +8,34 @@
 #define I std::complex<double>(0.0,1.0)
 using boost::math::quadrature::gauss;
 
+Market EuropeanOption::market;
+
+double & r = EuropeanOption::market.r;
+double & q = EuropeanOption::market.q;
+double & kappa = EuropeanOption::market.kappa;
+double & theta = EuropeanOption::market.theta;
+double & sigma = EuropeanOption::market.sigma;
+double & rho = EuropeanOption::market.rho;
+double & v0 = EuropeanOption::market.v0;
+double & S0 = EuropeanOption::market.S0;
+
+//void initMarket(double _r, double _kappa, double _theta,
+//                double _sigma, double _rho, double _v0, double S_0, double _q)
+//{
+//    EuropeanOption::r = _r;
+//    EuropeanOption::kappa = _kappa;
+//    EuropeanOption::theta = _theta;
+//    EuropeanOption::sigma = _sigma;
+//    EuropeanOption::rho = _rho;
+//    EuropeanOption::v0 = _v0;
+//    EuropeanOption::S0 = S_0;
+//    EuropeanOption::q = _q;
+//}
+
 void EuropeanOption::copy(const EuropeanOption& o2)
 {
-    r=o2.r;
-    kappa= o2.kappa;
-    theta=o2.theta;
-    sigma=o2.sigma;
-    rho=o2.rho;
-    v0=o2.v0;
-    K= o2.K;
-    T=o2.T;
-    S0=o2.S0;
-    q=o2.q;
+    K = o2.K;
+    T = o2.T;
 }
 
 
@@ -37,14 +53,14 @@ double EuropeanOption::Price() const
 {
     auto integrand = [&](double u)-> double {
         const std::complex<double> phi = CharFunc(u-I);
-        const std::complex<double> integrand = exp(-I*u*log(K))*exp(I*u*r*T)
+        const std::complex<double> integrand = exp(-I*u*log(K))*exp(I*u*market.r*T)
                 *(phi - 1.0)/(I*u*(1.0+I*u));
         return real(integrand);
     };
 
     double integral = gauss<double, M>::integrate(integrand,0,N);
 
-    double price = integral/M_PI + std::max(1-exp(log(K)-r*T),0.0);
+    double price = integral/M_PI + std::max(1-exp(log(K)-market.r*T),0.0);
 
     // Case put:
     if (optType == "P")
@@ -142,3 +158,6 @@ std::vector<std::complex<double>> EuropeanOption::JacCharFunc(std::complex<doubl
     std::vector<std::complex<double>> jacobian {phi*h1,phi*h2,phi*h3,phi*h4,phi*h5};
     return jacobian;
 }
+
+
+

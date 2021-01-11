@@ -123,6 +123,33 @@ ex1/fast:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/build
 .PHONY : ex1/fast
 
+Calibration.o: Calibration.cpp.o
+
+.PHONY : Calibration.o
+
+# target to build an object file
+Calibration.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.o
+.PHONY : Calibration.cpp.o
+
+Calibration.i: Calibration.cpp.i
+
+.PHONY : Calibration.i
+
+# target to preprocess a source file
+Calibration.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.i
+.PHONY : Calibration.cpp.i
+
+Calibration.s: Calibration.cpp.s
+
+.PHONY : Calibration.s
+
+# target to generate assembly for a file
+Calibration.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.s
+.PHONY : Calibration.cpp.s
+
 EuropeanOption.o: EuropeanOption.cpp.o
 
 .PHONY : EuropeanOption.o
@@ -149,6 +176,33 @@ EuropeanOption.s: EuropeanOption.cpp.s
 EuropeanOption.cpp.s:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/EuropeanOption.cpp.s
 .PHONY : EuropeanOption.cpp.s
+
+Market.o: Market.cpp.o
+
+.PHONY : Market.o
+
+# target to build an object file
+Market.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.o
+.PHONY : Market.cpp.o
+
+Market.i: Market.cpp.i
+
+.PHONY : Market.i
+
+# target to preprocess a source file
+Market.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.i
+.PHONY : Market.cpp.i
+
+Market.s: Market.cpp.s
+
+.PHONY : Market.s
+
+# target to generate assembly for a file
+Market.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.s
+.PHONY : Market.cpp.s
 
 main.o: main.cpp.o
 
@@ -186,9 +240,15 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... ex1"
+	@echo "... Calibration.o"
+	@echo "... Calibration.i"
+	@echo "... Calibration.s"
 	@echo "... EuropeanOption.o"
 	@echo "... EuropeanOption.i"
 	@echo "... EuropeanOption.s"
+	@echo "... Market.o"
+	@echo "... Market.i"
+	@echo "... Market.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

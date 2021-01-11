@@ -8,6 +8,10 @@
 #include <string>
 #include <utility>
 #include <complex>
+#include "Market.h"
+
+void initMarket(double _r, double _kappa, double _theta,
+                double _sigma, double _rho, double _v0, double S_0, double _q);
 
 class EuropeanOption {
 private:
@@ -15,16 +19,10 @@ private:
 
 public:
 // Public member data for convenience only
-    double r = 0; // Interest rate
-    double kappa = 0;
-    double theta = 0;
-    double sigma = 0;
-    double rho = 0;
-    double v0 = 0;
+    // static double r, q, kappa, theta, sigma, rho, v0, S0;
+    static Market market;
     double K = 0; // Strike price
     double T = 0; // Expiry date
-    double S0 = 0; // Current underlying price
-    double q = 0;
     std::string optType; // Option name (call, put)
 
     // integration and CF parameters:
@@ -34,13 +32,9 @@ public:
 
 public:
 // Constructors
-    EuropeanOption(const double r, const double kappa, const double theta,
-                   const double sigma, const double rho, const double v0,
-                   const double K, const double T, const double S0,
-                   const double q, std::string  optType,
+    EuropeanOption(const double K, const double T, std::string  optType,
                    std::string cfType = "Cui",const double N = 200):
-                   r(r), kappa(kappa), theta(theta),sigma(sigma),rho(rho), v0(v0),K(K),T(T),
-                   S0(S0),q(q),optType(std::move(optType)),N(N),cfType(std::move(cfType)){}
+                   K(K),T(T),optType(std::move(optType)),N(N),cfType(std::move(cfType)){}
 
 // Destructor
     virtual ~EuropeanOption();
@@ -49,6 +43,7 @@ public:
 // Functions that calculate option price and (some) sensitivities
     double Price() const;
     std::vector<double> ComputeJacobian() const;
+
 private:
     std::complex<double> CharFunc(std::complex<double> u) const;
     std::vector<std::complex<double>> JacCharFunc(std::complex<double> u) const;

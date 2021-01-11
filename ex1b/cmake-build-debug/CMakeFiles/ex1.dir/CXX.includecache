@@ -6,6 +6,18 @@
 
 #IncludeRegexTransform: 
 
+/mnt/c/code/Thesis/ex1b/Calibration.cpp
+Calibration.h
+/mnt/c/code/Thesis/ex1b/Calibration.h
+
+/mnt/c/code/Thesis/ex1b/Calibration.h
+utility
+-
+vector
+-
+Market.h
+/mnt/c/code/Thesis/ex1b/Market.h
+
 /mnt/c/code/Thesis/ex1b/EuropeanOption.cpp
 complex
 -
@@ -21,4 +33,24 @@ utility
 -
 complex
 -
+Market.h
+/mnt/c/code/Thesis/ex1b/Market.h
+
+/mnt/c/code/Thesis/ex1b/Market.cpp
+Market.h
+/mnt/c/code/Thesis/ex1b/Market.h
+
+/mnt/c/code/Thesis/ex1b/Market.h
+
+/mnt/c/code/Thesis/ex1b/main.cpp
+iostream
+-
+ctime
+-
+vector
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/ex1b/EuropeanOption.h
+Market.h
+/mnt/c/code/Thesis/ex1b/Market.h
 

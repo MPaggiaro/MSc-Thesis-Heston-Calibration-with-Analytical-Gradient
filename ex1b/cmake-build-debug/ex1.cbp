@@ -82,10 +82,22 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Calibration.cpp">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Calibration.h">
+			<Option target="ex1"/>
+		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/ex1b/EuropeanOption.cpp">
 			<Option target="ex1"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/ex1b/EuropeanOption.h">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Market.cpp">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Market.h">
 			<Option target="ex1"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/ex1b/main.cpp">
