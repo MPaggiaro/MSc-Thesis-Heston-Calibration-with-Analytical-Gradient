@@ -17,12 +17,6 @@ vector
 -
 Market.h
 /mnt/c/code/Thesis/ex1b/Market.h
-
-/mnt/c/code/Thesis/ex1b/EuropeanOption.cpp
-complex
--
-boost/math/quadrature/gauss.hpp
--
 EuropeanOption.h
 /mnt/c/code/Thesis/ex1b/EuropeanOption.h
 
@@ -33,10 +27,6 @@ utility
 -
 complex
 -
-Market.h
-/mnt/c/code/Thesis/ex1b/Market.h
-
-/mnt/c/code/Thesis/ex1b/Market.cpp
 Market.h
 /mnt/c/code/Thesis/ex1b/Market.h
 
@@ -51,6 +41,10 @@ vector
 -
 EuropeanOption.h
 /mnt/c/code/Thesis/ex1b/EuropeanOption.h
-Market.h
-/mnt/c/code/Thesis/ex1b/Market.h
+Calibration.h
+/mnt/c/code/Thesis/ex1b/Calibration.h
+levmar/levmar.h
+-
+iomanip
+-
 

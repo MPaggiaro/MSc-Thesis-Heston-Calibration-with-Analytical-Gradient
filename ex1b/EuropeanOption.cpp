@@ -19,19 +19,6 @@ double & rho = EuropeanOption::market.rho;
 double & v0 = EuropeanOption::market.v0;
 double & S0 = EuropeanOption::market.S0;
 
-//void initMarket(double _r, double _kappa, double _theta,
-//                double _sigma, double _rho, double _v0, double S_0, double _q)
-//{
-//    EuropeanOption::r = _r;
-//    EuropeanOption::kappa = _kappa;
-//    EuropeanOption::theta = _theta;
-//    EuropeanOption::sigma = _sigma;
-//    EuropeanOption::rho = _rho;
-//    EuropeanOption::v0 = _v0;
-//    EuropeanOption::S0 = S_0;
-//    EuropeanOption::q = _q;
-//}
-
 void EuropeanOption::copy(const EuropeanOption& o2)
 {
     K = o2.K;
@@ -108,18 +95,17 @@ std::complex<double> EuropeanOption::CharFunc(std::complex<double> u) const
     return phi;
 }
 
-std::vector<double> EuropeanOption::ComputeJacobian() const
+std::vector<double> EuropeanOption::Jacobian() const
 {
     unsigned index;
-    auto integrand = [&](double v)-> double {
+    auto integrand = [&](double v)->double {
         const std::complex<double> integrand = 1/M_PI * exp(-I * v * log(K)) * exp(I * v * r * T) *
                 JacCharFunc(v - I).at(index) / (I * v * (1.0 + I * v));
         return real(integrand);
     };
-    const unsigned sizeTheta = 5;
-    std::vector<double> integral;
-    for (index = 0; index < sizeTheta; index ++)
-        integral.push_back(gauss<double,M>::integrate(integrand,0,N));
+    std::vector<double> integral(market.nParameters);
+    for (index = 0; index < market.nParameters; index ++)
+        integral[index] = gauss<double,M>::integrate(integrand,0,N);
     return integral;
 }
 

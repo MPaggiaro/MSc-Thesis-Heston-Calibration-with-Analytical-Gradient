@@ -7,17 +7,24 @@
 #include <utility>
 #include <vector>
 #include "Market.h"
+#include "EuropeanOption.h"
 
 class Calibration {
 public:
-    std::vector<double> strikes;
-    std::vector<double> maturities;
-    const Market market;
+    std::vector<EuropeanOption> options;
 
     Calibration(std::vector<double> strikes, std::vector<double> maturities,
                 double r, double q, double kappa, double theta, double sigma, double rho,
-                double v0, double S0): strikes(std::move(strikes)), maturities(std::move(maturities)),
-                market(r,q,kappa,theta,sigma,rho,v0,S0) {}
+                double v0, double S0);
+    Calibration(std::vector<double> strikes, std::vector<double> maturities, double *parameters,
+                double r, double S0, double q = 0.0, unsigned nParameters = 5);
+
+    // std::vector<double> GetPrices () const;
+    // std::vector<double> GetGradients () const;
+    static void setParameters (const double *parameters);
+
+private:
+
 };
 
 

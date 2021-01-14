@@ -10,9 +10,6 @@
 #include <complex>
 #include "Market.h"
 
-void initMarket(double _r, double _kappa, double _theta,
-                double _sigma, double _rho, double _v0, double S_0, double _q);
-
 class EuropeanOption {
 private:
     void copy(const EuropeanOption& o2);
@@ -32,7 +29,7 @@ public:
 
 public:
 // Constructors
-    EuropeanOption(const double K, const double T, std::string  optType,
+    EuropeanOption(const double K, const double T, std::string  optType = "C",
                    std::string cfType = "Cui",const double N = 200):
                    K(K),T(T),optType(std::move(optType)),N(N),cfType(std::move(cfType)){}
 
@@ -41,13 +38,12 @@ public:
 // Assignment operator
     EuropeanOption& operator = (const EuropeanOption& option2);
 // Functions that calculate option price and (some) sensitivities
-    double Price() const;
-    std::vector<double> ComputeJacobian() const;
+    double Price() const; // some prices are negative, have to fix this!
+    std::vector<double> Jacobian() const;
 
 private:
     std::complex<double> CharFunc(std::complex<double> u) const;
     std::vector<std::complex<double>> JacCharFunc(std::complex<double> u) const;
 };
-
 
 #endif //EX1_EUROPEANOPTION_H
