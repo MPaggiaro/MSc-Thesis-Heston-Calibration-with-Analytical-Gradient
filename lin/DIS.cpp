@@ -1,6 +1,6 @@
 #include <levmar/levmar.h>
 #include <vdt/vdtMath.h>
-#include <Faddeeva.hh>
+#include "Faddeeva.hh"
 #include <cmath>
 #include <complex>
 #include <ctime>

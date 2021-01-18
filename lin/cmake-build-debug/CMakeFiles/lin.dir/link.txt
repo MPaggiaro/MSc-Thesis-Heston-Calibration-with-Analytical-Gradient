@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/lin.dir/cfg.cpp.o CMakeFiles/lin.dir/Faddeeva.cc.o  -o lin  -llevmar -llapack -lblas -lm 

@@ -1,0 +1,38 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/mnt/c/code/Thesis/lin/Faddeeva.hh
+complex
+-
+
+/mnt/c/code/Thesis/lin/cfg.cpp
+levmar/levmar.h
+-
+vdt/vdtMath.h
+-
+Faddeeva.hh
+/mnt/c/code/Thesis/lin/Faddeeva.hh
+cmath
+-
+complex
+-
+ctime
+-
+fstream
+-
+iomanip
+-
+iostream
+-
+vector
+-
+random
+-
+assert.h
+-
+
