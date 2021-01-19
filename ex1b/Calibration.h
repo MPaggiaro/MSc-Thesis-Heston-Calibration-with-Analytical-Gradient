@@ -19,13 +19,10 @@ public:
     Calibration(std::vector<double> strikes, std::vector<double> maturities, double *parameters,
                 double r, double S0, double q = 0.0, unsigned nParameters = 5);
 
-    // std::vector<double> GetPrices () const;
-    // std::vector<double> GetGradients () const;
     static void setParameters (const double *parameters);
 
 private:
 
 };
-
 
 #endif //EX1_CALIBRATION_H

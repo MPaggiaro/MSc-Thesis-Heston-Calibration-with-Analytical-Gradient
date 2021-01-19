@@ -204,6 +204,60 @@ Market.cpp.s:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.s
 .PHONY : Market.cpp.s
 
+SPXOption.o: SPXOption.cpp.o
+
+.PHONY : SPXOption.o
+
+# target to build an object file
+SPXOption.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.o
+.PHONY : SPXOption.cpp.o
+
+SPXOption.i: SPXOption.cpp.i
+
+.PHONY : SPXOption.i
+
+# target to preprocess a source file
+SPXOption.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.i
+.PHONY : SPXOption.cpp.i
+
+SPXOption.s: SPXOption.cpp.s
+
+.PHONY : SPXOption.s
+
+# target to generate assembly for a file
+SPXOption.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.s
+.PHONY : SPXOption.cpp.s
+
+VIXOption.o: VIXOption.cpp.o
+
+.PHONY : VIXOption.o
+
+# target to build an object file
+VIXOption.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.o
+.PHONY : VIXOption.cpp.o
+
+VIXOption.i: VIXOption.cpp.i
+
+.PHONY : VIXOption.i
+
+# target to preprocess a source file
+VIXOption.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.i
+.PHONY : VIXOption.cpp.i
+
+VIXOption.s: VIXOption.cpp.s
+
+.PHONY : VIXOption.s
+
+# target to generate assembly for a file
+VIXOption.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.s
+.PHONY : VIXOption.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -249,6 +303,12 @@ help:
 	@echo "... Market.o"
 	@echo "... Market.i"
 	@echo "... Market.s"
+	@echo "... SPXOption.o"
+	@echo "... SPXOption.i"
+	@echo "... SPXOption.s"
+	@echo "... VIXOption.o"
+	@echo "... VIXOption.i"
+	@echo "... VIXOption.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

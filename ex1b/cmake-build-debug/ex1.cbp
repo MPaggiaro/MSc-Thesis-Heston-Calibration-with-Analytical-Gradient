@@ -100,6 +100,18 @@
 		<Unit filename="/mnt/c/code/Thesis/ex1b/Market.h">
 			<Option target="ex1"/>
 		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/SPXOption.cpp">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/SPXOption.h">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/VIXOption.cpp">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/ex1b/VIXOption.h">
+			<Option target="ex1"/>
+		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/ex1b/main.cpp">
 			<Option target="ex1"/>
 		</Unit>
