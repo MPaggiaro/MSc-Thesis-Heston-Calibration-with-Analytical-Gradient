@@ -7,16 +7,17 @@
 
 #include <string>
 #include <utility>
+#include <vector>
 #include <complex>
 #include "Market.h"
+#define I std::complex<double>(0.0,1.0)
 
 class EuropeanOption {
 private:
-    void copy(const EuropeanOption& o2);
+    void copy(const EuropeanOption& o2); // need to check if I can do this with inheritance, see book.
 
 public:
 // Public member data for convenience only
-    // static double r, q, kappa, theta, sigma, rho, v0, S0;
     static Market market;
     double K = 0; // Strike price
     double T = 0; // Expiry date
@@ -38,12 +39,13 @@ public:
 // Assignment operator
     EuropeanOption& operator = (const EuropeanOption& option2);
 // Functions that calculate option price and (some) sensitivities
-    double Price() const; // some prices are negative, have to fix this!
-    std::vector<double> Jacobian() const;
+    virtual double Price() const = 0; // some prices are negative, have to fix this!
+    // virtual double ImprovedPrice() const = 0;
+    virtual std::vector<double> Jacobian() const = 0;
 
 private:
-    std::complex<double> CharFunc(std::complex<double> u) const;
-    std::vector<std::complex<double>> JacCharFunc(std::complex<double> u) const;
+    virtual std::complex<double> CharFunc(std::complex<double> u) const = 0;
+    virtual std::vector<std::complex<double>> JacCharFunc(std::complex<double> u) const = 0;
 };
 
 #endif //EX1_EUROPEANOPTION_H

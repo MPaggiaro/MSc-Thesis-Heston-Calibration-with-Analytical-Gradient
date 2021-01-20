@@ -6,23 +6,23 @@
 #define EX1_CALIBRATION_H
 #include <utility>
 #include <vector>
+#include <memory>
 #include "Market.h"
 #include "EuropeanOption.h"
 
 class Calibration {
 public:
-    std::vector<EuropeanOption> options;
+    std::vector<std::shared_ptr<EuropeanOption>> options;
 
-    Calibration(std::vector<double> strikes, std::vector<double> maturities,
-                double r, double q, double kappa, double theta, double sigma, double rho,
-                double v0, double S0);
     Calibration(std::vector<double> strikes, std::vector<double> maturities, double *parameters,
                 double r, double S0, double q = 0.0, unsigned nParameters = 5);
 
     static void setParameters (const double *parameters);
 
-private:
-
 };
+
+void computePrices(double *p, double *x, int m, int n, void *data);
+void computeGradients(double *p, double *jac, int m, int n, void *data);
+
 
 #endif //EX1_CALIBRATION_H

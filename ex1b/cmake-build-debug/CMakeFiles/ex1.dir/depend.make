@@ -5,13 +5,23 @@ CMakeFiles/ex1.dir/Calibration.cpp.o: ../Calibration.cpp
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../Calibration.h
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../EuropeanOption.h
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../Market.h
+CMakeFiles/ex1.dir/Calibration.cpp.o: ../SPXOption.h
 
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o: ../EuropeanOption.cpp
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o: ../EuropeanOption.h
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o: ../Market.h
 
 CMakeFiles/ex1.dir/Market.cpp.o: ../Market.cpp
-CMakeFiles/ex1.dir/Market.cpp.o: ../Market.h
+
+CMakeFiles/ex1.dir/SPXOption.cpp.o: ../EuropeanOption.h
+CMakeFiles/ex1.dir/SPXOption.cpp.o: ../Market.h
+CMakeFiles/ex1.dir/SPXOption.cpp.o: ../SPXOption.cpp
+CMakeFiles/ex1.dir/SPXOption.cpp.o: ../SPXOption.h
+
+CMakeFiles/ex1.dir/VIXOption.cpp.o: ../EuropeanOption.h
+CMakeFiles/ex1.dir/VIXOption.cpp.o: ../Market.h
+CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.cpp
+CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.h
 
 CMakeFiles/ex1.dir/main.cpp.o: ../Calibration.h
 CMakeFiles/ex1.dir/main.cpp.o: ../EuropeanOption.h

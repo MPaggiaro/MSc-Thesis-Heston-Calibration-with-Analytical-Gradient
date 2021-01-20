@@ -18,29 +18,6 @@ inline std::ostream& operator << (std::ostream& os, const std::vector<T>& v)
     return os;
 }
 
-void computePrices(double *p, double *x, int m, int n, void *data)
-{
-    auto * calibration = static_cast<Calibration *> (data);
-    Calibration::setParameters(p);
-    for (unsigned i = 0; i < calibration->options.size(); ++i)
-    {
-        x[i] = calibration->options[i].Price();
-    }
-}
-
-void computeGradients(double *p, double *jac, int m, int n, void *data)
-{
-    auto * calibration = static_cast<Calibration *> (data);
-    Calibration::setParameters(p);
-    for (unsigned i = 0; i < n; ++i)
-    {
-        auto currentGradient = calibration->options[i].Jacobian();
-        for (unsigned j = 0; j < m; ++j)
-        {
-            jac[m * i + j] = currentGradient[j];
-        }
-    }
-}
 
 
 int main() 
@@ -77,6 +54,9 @@ int main()
     computePrices(marketParameters,marketPrices,nParameters,strikes.size(),
                   (void *) &calibration);
 
+    // debug:
+
+
     // algorithm parameters
     double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
     opts[0]=LM_INIT_MU;
@@ -101,7 +81,7 @@ int main()
               << p[0] << "\t" << p[1] << "\t" << p[2] << "\t" <<
               p[3] << "\t" << p[4] << std::endl;
 
-    double jac[nParameters*strikes.size()];
+    // double jac[nParameters*strikes.size()];
     dlevmar_der(computePrices, computeGradients, p, marketPrices, nParameters,
                 strikes.size(), 100, opts, info, nullptr, nullptr, (void *) &calibration);
 

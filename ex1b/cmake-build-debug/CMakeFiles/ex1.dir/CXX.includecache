@@ -6,20 +6,12 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/code/Thesis/ex1b/Calibration.h
-utility
--
-vector
--
-Market.h
-/mnt/c/code/Thesis/ex1b/Market.h
-EuropeanOption.h
-/mnt/c/code/Thesis/ex1b/EuropeanOption.h
-
 /mnt/c/code/Thesis/ex1b/EuropeanOption.h
 string
 -
 utility
+-
+vector
 -
 complex
 -
@@ -28,19 +20,17 @@ Market.h
 
 /mnt/c/code/Thesis/ex1b/Market.h
 
-/mnt/c/code/Thesis/ex1b/main.cpp
-iostream
+/mnt/c/code/Thesis/ex1b/SPXOption.cpp
+complex
 -
-ctime
+boost/math/quadrature/gauss.hpp
 -
-vector
+SPXOption.h
+/mnt/c/code/Thesis/ex1b/SPXOption.h
+
+/mnt/c/code/Thesis/ex1b/SPXOption.h
+utility
 -
 EuropeanOption.h
 /mnt/c/code/Thesis/ex1b/EuropeanOption.h
-Calibration.h
-/mnt/c/code/Thesis/ex1b/Calibration.h
-levmar/levmar.h
--
-iomanip
--
 
