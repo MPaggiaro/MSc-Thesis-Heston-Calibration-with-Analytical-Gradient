@@ -4,7 +4,13 @@
 
 #include "EuropeanOption.h"
 
-Market EuropeanOption::market;
+//Market EuropeanOption::market;
+
+double EuropeanOption::r, EuropeanOption::q, EuropeanOption::kappa,
+    EuropeanOption::theta, EuropeanOption::sigma, EuropeanOption::rho,
+    EuropeanOption::v0, EuropeanOption::S0;
+unsigned EuropeanOption::nParameters;
+// std::vector<double> EuropeanOption::xGauss, EuropeanOption::wGauss;
 
 void EuropeanOption::copy(const EuropeanOption& o2)
 {

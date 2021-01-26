@@ -123,6 +123,33 @@ lin/fast:
 	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/build
 .PHONY : lin/fast
 
+DIS.o: DIS.cpp.o
+
+.PHONY : DIS.o
+
+# target to build an object file
+DIS.cpp.o:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.o
+.PHONY : DIS.cpp.o
+
+DIS.i: DIS.cpp.i
+
+.PHONY : DIS.i
+
+# target to preprocess a source file
+DIS.cpp.i:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.i
+.PHONY : DIS.cpp.i
+
+DIS.s: DIS.cpp.s
+
+.PHONY : DIS.s
+
+# target to generate assembly for a file
+DIS.cpp.s:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.s
+.PHONY : DIS.cpp.s
+
 Faddeeva.o: Faddeeva.cc.o
 
 .PHONY : Faddeeva.o
@@ -150,33 +177,6 @@ Faddeeva.cc.s:
 	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/Faddeeva.cc.s
 .PHONY : Faddeeva.cc.s
 
-cfg.o: cfg.cpp.o
-
-.PHONY : cfg.o
-
-# target to build an object file
-cfg.cpp.o:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/cfg.cpp.o
-.PHONY : cfg.cpp.o
-
-cfg.i: cfg.cpp.i
-
-.PHONY : cfg.i
-
-# target to preprocess a source file
-cfg.cpp.i:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/cfg.cpp.i
-.PHONY : cfg.cpp.i
-
-cfg.s: cfg.cpp.s
-
-.PHONY : cfg.s
-
-# target to generate assembly for a file
-cfg.cpp.s:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/cfg.cpp.s
-.PHONY : cfg.cpp.s
-
 # Help Target
 help:
 	@echo "The following are some of the valid targets for this Makefile:"
@@ -186,12 +186,12 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... lin"
+	@echo "... DIS.o"
+	@echo "... DIS.i"
+	@echo "... DIS.s"
 	@echo "... Faddeeva.o"
 	@echo "... Faddeeva.i"
 	@echo "... Faddeeva.s"
-	@echo "... cfg.o"
-	@echo "... cfg.i"
-	@echo "... cfg.s"
 .PHONY : help
 
 

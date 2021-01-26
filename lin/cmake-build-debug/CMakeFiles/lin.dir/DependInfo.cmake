@@ -4,8 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
+  "/mnt/c/code/Thesis/lin/DIS.cpp" "/mnt/c/code/Thesis/lin/cmake-build-debug/CMakeFiles/lin.dir/DIS.cpp.o"
   "/mnt/c/code/Thesis/lin/Faddeeva.cc" "/mnt/c/code/Thesis/lin/cmake-build-debug/CMakeFiles/lin.dir/Faddeeva.cc.o"
-  "/mnt/c/code/Thesis/lin/cfg.cpp" "/mnt/c/code/Thesis/lin/cmake-build-debug/CMakeFiles/lin.dir/cfg.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

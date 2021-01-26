@@ -177,32 +177,32 @@ EuropeanOption.cpp.s:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/EuropeanOption.cpp.s
 .PHONY : EuropeanOption.cpp.s
 
-Market.o: Market.cpp.o
+Faddeeva.o: Faddeeva.cc.o
 
-.PHONY : Market.o
+.PHONY : Faddeeva.o
 
 # target to build an object file
-Market.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.o
-.PHONY : Market.cpp.o
+Faddeeva.cc.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.o
+.PHONY : Faddeeva.cc.o
 
-Market.i: Market.cpp.i
+Faddeeva.i: Faddeeva.cc.i
 
-.PHONY : Market.i
+.PHONY : Faddeeva.i
 
 # target to preprocess a source file
-Market.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.i
-.PHONY : Market.cpp.i
+Faddeeva.cc.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.i
+.PHONY : Faddeeva.cc.i
 
-Market.s: Market.cpp.s
+Faddeeva.s: Faddeeva.cc.s
 
-.PHONY : Market.s
+.PHONY : Faddeeva.s
 
 # target to generate assembly for a file
-Market.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Market.cpp.s
-.PHONY : Market.cpp.s
+Faddeeva.cc.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.s
+.PHONY : Faddeeva.cc.s
 
 SPXOption.o: SPXOption.cpp.o
 
@@ -300,9 +300,9 @@ help:
 	@echo "... EuropeanOption.o"
 	@echo "... EuropeanOption.i"
 	@echo "... EuropeanOption.s"
-	@echo "... Market.o"
-	@echo "... Market.i"
-	@echo "... Market.s"
+	@echo "... Faddeeva.o"
+	@echo "... Faddeeva.i"
+	@echo "... Faddeeva.s"
 	@echo "... SPXOption.o"
 	@echo "... SPXOption.i"
 	@echo "... SPXOption.s"

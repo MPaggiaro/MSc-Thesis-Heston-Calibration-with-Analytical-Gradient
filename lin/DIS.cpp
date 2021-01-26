@@ -350,7 +350,7 @@ int main() {
     //printSPXgradient(mp, S, r, (int)SPXkarr.size(), SPXtarr, SPXkarr);
     //printCFvol(mp, VIXtarr[1], gl.nGrid>>1);
     //printIntegrandVIXoption(mp, VIXtarr[5], VIXkarr[5], tbar, gl.nGrid>>1);
-    //printVIXcalls(mp, VIXtarr, tbar, VIXkarr, r, (int)VIXkarr.size());
+    printVIXcalls(mp, VIXtarr, tbar, VIXkarr, r, (int)VIXkarr.size());
     //printVIXgradient(mp, tbar, r, (int)VIXkarr.size(), VIXtarr, VIXkarr);
     //CD input = mid + x64[0] * halfRange + i;
     //gradVIXintegrand(input, mp, VIXtarr[1], VIXkarr[1], tbar);

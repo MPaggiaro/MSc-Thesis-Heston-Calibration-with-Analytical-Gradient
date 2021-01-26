@@ -82,13 +82,13 @@
 				</MakeCommands>
 			</Target>
 		</Build>
+		<Unit filename="/mnt/c/code/Thesis/lin/DIS.cpp">
+			<Option target="lin"/>
+		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/lin/Faddeeva.cc">
 			<Option target="lin"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/lin/Faddeeva.hh">
-			<Option target="lin"/>
-		</Unit>
-		<Unit filename="/mnt/c/code/Thesis/lin/cfg.cpp">
 			<Option target="lin"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/lin/CMakeLists.txt">

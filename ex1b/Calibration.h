@@ -7,7 +7,6 @@
 #include <utility>
 #include <vector>
 #include <memory>
-#include "Market.h"
 #include "EuropeanOption.h"
 
 class Calibration {

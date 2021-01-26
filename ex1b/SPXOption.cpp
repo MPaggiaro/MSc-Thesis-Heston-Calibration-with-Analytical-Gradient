@@ -1,17 +1,17 @@
 //
 // Created by Marco Paggiaro on 19/01/2021.
 //
-#include <complex>
-#include <boost/math/quadrature/gauss.hpp>
+
 #include "SPXOption.h"
-using boost::math::quadrature::gauss;
-#define xGauss gauss<double,64>::abscissa()
-#define wGauss gauss<double,64>::weights()
+#include <boost/math/quadrature/gauss.hpp>
+#define xGauss boost::math::quadrature::gauss<double,64>::abscissa()
+#define wGauss boost::math::quadrature::gauss<double,64>::weights()
+#define I std::complex<double>(0.0,1.0)
+
 
 // Functions that calculate option price and sensitivities
 double SPXOption::Price() const
 {
-    auto &r = market.r, &q = market.q, &S0 = market.S0;
     auto integrand = [&](double u)-> double {
         const std::complex<double> phi = CharFunc(u-I);
         const std::complex<double> integrand = exp(-I*u*log(K))*exp(I*u*r*T)
@@ -21,15 +21,12 @@ double SPXOption::Price() const
 
     double integral = 0.0;
     for (int i = 0; i < xGauss.size(); ++i)
-    {
         integral += N/2*(integrand(N/2 + N/2*xGauss[i]) + integrand(N/2 - N/2*xGauss[i]))
                     *wGauss[i];
-    }
     // Alternative:
     // double integral = gauss<double, M>::integrate(integrand,0,N);
 
     double price = integral/M_PI + std::max(1-exp(log(K)-r*T),0.0);
-
     // Case put:
     if (optType == "P")
         price = price - S0*exp(-q*T) + K*exp(-r*T);
@@ -39,45 +36,29 @@ double SPXOption::Price() const
 
 std::vector<double> SPXOption::Jacobian() const
 {
-    auto &r = market.r, &q = market.q, &S0 = market.S0;
-//    unsigned index;
-//    auto integrand = [&](double v)->double {
-//        const std::complex<double> integrand = 1/M_PI * exp(-I * v * log(K)) * exp(I * v * r * T) *
-//                                               JacCharFunc(v - I).at(index) / (I * v * (1.0 + I * v));
-//        return real(integrand);
-//    };
     auto partial_integrand = [&](double v)->std::complex<double> {
         // We don't have the evaluation of the characteristic function here.
         return 1/M_PI * exp(-I * v * log(K)) * exp(I * v * r * T)
                / (I * v * (1.0 + I * v));
     };
 
-
-    std::vector<double> integral(market.nParameters);
-
+    std::vector<double> integral(nParameters);
     for (int i = 0; i < xGauss.size(); ++i)
     {
         auto u_up = N/2 + N/2*xGauss[i], u_down = N/2 - N/2*xGauss[i];
-        auto phi_up = JacCharFunc(u_up - I), phi_down = JacCharFunc(u_down - I);
+        auto phi_up = JacobianCF(u_up - I), phi_down = JacobianCF(u_down - I);
         auto part_int_up = partial_integrand(u_up), part_int_down = partial_integrand(u_down);
 
-        for (int j = 0; j < market.nParameters; ++j) {
+        for (int j = 0; j < nParameters; ++j) {
             integral[j] += N/2 * wGauss[i] * (real(phi_up[j]*part_int_up) +
                     real(phi_down[j]*part_int_down));
         }
     }
-
-//    for (index = 0; index < market.nParameters; index ++)
-//        integral[index] = gauss<double,M>::integrate(integrand,0,N);
     return integral;
 }
 
 std::complex<double> SPXOption::CharFunc(std::complex<double> u) const
 {
-    // Renaming the market variables for better readability.
-    auto &r = market.r, &q = market.q, &S0 = market.S0, &kappa = market.kappa,
-        &sigma = market.sigma, &rho = market.rho, &theta = market.theta, &v0 = market.v0;
-
     const double F = S0 * exp((r - q) * T);
     const std::complex<double> ksi = kappa - sigma*rho*I*u;
     const std::complex<double> d = sqrt(pow(ksi,2) + pow(sigma,2) * (pow(u,2) + I*u));
@@ -115,12 +96,8 @@ std::complex<double> SPXOption::CharFunc(std::complex<double> u) const
     return phi;
 }
 
-std::vector<std::complex<double>> SPXOption::JacCharFunc(std::complex<double> u) const
+std::vector<std::complex<double>> SPXOption::JacobianCF(std::complex<double> u) const
 {
-    // Renaming the market variables for better readability.
-    auto &r = market.r, &q = market.q, &S0 = market.S0, &kappa = market.kappa,
-            &sigma = market.sigma, &rho = market.rho, &theta = market.theta, &v0 = market.v0;
-
     const double sigma2 = pow(sigma,2);
     const std::complex<double> ksi = kappa - sigma*rho*I*u,
             d = sqrt(pow(ksi,2) + pow(sigma,2) * (pow(u,2) + I*u)),
@@ -139,7 +116,6 @@ std::vector<std::complex<double>> SPXOption::JacCharFunc(std::complex<double> u)
             pA1_psigma = (pow(u, 2) + I * u) * (T / 2) * pd_psigma * cosh(d * (T / 2)),
             pA2_psigma = rho / sigma * pA2_prho - (2.0 + T * ksi) / (v0 * T * ksi * I * u) * pA1_prho + sigma * T * A1 / (2 * v0),
             pA_psigma = 1.0 / A2 * pA1_psigma - A / A2 * pA2_psigma;
-
 
     const std::complex<double> h1 = - A/v0,
             h2 = 2*kappa/sigma2*D - kappa*rho*T*I*u/sigma,

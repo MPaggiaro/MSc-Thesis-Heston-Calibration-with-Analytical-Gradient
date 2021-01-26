@@ -6,11 +6,7 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/code/Thesis/lin/Faddeeva.hh
-complex
--
-
-/mnt/c/code/Thesis/lin/cfg.cpp
+/mnt/c/code/Thesis/lin/DIS.cpp
 levmar/levmar.h
 -
 vdt/vdtMath.h
@@ -31,8 +27,8 @@ iostream
 -
 vector
 -
-random
--
-assert.h
+
+/mnt/c/code/Thesis/lin/Faddeeva.hh
+complex
 -
 

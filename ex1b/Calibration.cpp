@@ -4,6 +4,7 @@
 
 #include "Calibration.h"
 #include "SPXOption.h"
+//#include <boost/math/quadrature/gauss.hpp>
 
 Calibration::Calibration(std::vector<double> strikes, std::vector<double> maturities, double *parameters, double r,
                          double S0, double q, unsigned nParameters) {
@@ -12,18 +13,22 @@ Calibration::Calibration(std::vector<double> strikes, std::vector<double> maturi
         options.emplace_back(
                 std::make_shared<SPXOption>(strikes[i], maturities[i]));
     setParameters(parameters);
-    EuropeanOption::market.r = r;
-    EuropeanOption::market.S0 = S0;
-    EuropeanOption::market.q = q;
-    EuropeanOption::market.nParameters = nParameters;
+    EuropeanOption::r = r;
+    EuropeanOption::S0 = S0;
+    EuropeanOption::q = q;
+    EuropeanOption::nParameters = nParameters;
+
+//    EuropeanOption::xGauss = boost::math::quadrature::gauss<double, 64>::abscissa();
+//    EuropeanOption::wGauss = boost::math::quadrature::gauss<double, 64>::weights();
+
 }
 
 void Calibration::setParameters(const double *parameters) {
-    EuropeanOption::market.v0 = parameters[0];
-    EuropeanOption::market.theta = parameters[1];
-    EuropeanOption::market.rho = parameters[2];
-    EuropeanOption::market.kappa = parameters[3];
-    EuropeanOption::market.sigma = parameters[4];
+    EuropeanOption::v0 = parameters[0];
+    EuropeanOption::theta = parameters[1];
+    EuropeanOption::rho = parameters[2];
+    EuropeanOption::kappa = parameters[3];
+    EuropeanOption::sigma = parameters[4];
 }
 
 void computePrices(double *p, double *x, int m, int n, void *data)

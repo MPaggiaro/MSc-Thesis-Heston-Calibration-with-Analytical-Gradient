@@ -94,10 +94,10 @@
 		<Unit filename="/mnt/c/code/Thesis/ex1b/EuropeanOption.h">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/mnt/c/code/Thesis/ex1b/Market.cpp">
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Faddeeva.cc">
 			<Option target="ex1"/>
 		</Unit>
-		<Unit filename="/mnt/c/code/Thesis/ex1b/Market.h">
+		<Unit filename="/mnt/c/code/Thesis/ex1b/Faddeeva.hh">
 			<Option target="ex1"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/ex1b/SPXOption.cpp">

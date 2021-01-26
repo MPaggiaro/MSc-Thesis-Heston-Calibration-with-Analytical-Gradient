@@ -96,22 +96,9 @@ CMakeFiles/ex1.dir/Calibration.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex1.dir/Calibration.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/ex1b/Calibration.cpp -o CMakeFiles/ex1.dir/Calibration.cpp.s
 
-CMakeFiles/ex1.dir/Market.cpp.o: CMakeFiles/ex1.dir/flags.make
-CMakeFiles/ex1.dir/Market.cpp.o: ../Market.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ex1.dir/Market.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex1.dir/Market.cpp.o -c /mnt/c/code/Thesis/ex1b/Market.cpp
-
-CMakeFiles/ex1.dir/Market.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ex1.dir/Market.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/code/Thesis/ex1b/Market.cpp > CMakeFiles/ex1.dir/Market.cpp.i
-
-CMakeFiles/ex1.dir/Market.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex1.dir/Market.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/ex1b/Market.cpp -o CMakeFiles/ex1.dir/Market.cpp.s
-
 CMakeFiles/ex1.dir/SPXOption.cpp.o: CMakeFiles/ex1.dir/flags.make
 CMakeFiles/ex1.dir/SPXOption.cpp.o: ../SPXOption.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ex1.dir/SPXOption.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/ex1.dir/SPXOption.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex1.dir/SPXOption.cpp.o -c /mnt/c/code/Thesis/ex1b/SPXOption.cpp
 
 CMakeFiles/ex1.dir/SPXOption.cpp.i: cmake_force
@@ -124,7 +111,7 @@ CMakeFiles/ex1.dir/SPXOption.cpp.s: cmake_force
 
 CMakeFiles/ex1.dir/VIXOption.cpp.o: CMakeFiles/ex1.dir/flags.make
 CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ex1.dir/VIXOption.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/ex1.dir/VIXOption.cpp.o"
 	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex1.dir/VIXOption.cpp.o -c /mnt/c/code/Thesis/ex1b/VIXOption.cpp
 
 CMakeFiles/ex1.dir/VIXOption.cpp.i: cmake_force
@@ -135,14 +122,27 @@ CMakeFiles/ex1.dir/VIXOption.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex1.dir/VIXOption.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/ex1b/VIXOption.cpp -o CMakeFiles/ex1.dir/VIXOption.cpp.s
 
+CMakeFiles/ex1.dir/Faddeeva.cc.o: CMakeFiles/ex1.dir/flags.make
+CMakeFiles/ex1.dir/Faddeeva.cc.o: ../Faddeeva.cc
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/ex1.dir/Faddeeva.cc.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/ex1.dir/Faddeeva.cc.o -c /mnt/c/code/Thesis/ex1b/Faddeeva.cc
+
+CMakeFiles/ex1.dir/Faddeeva.cc.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/ex1.dir/Faddeeva.cc.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/code/Thesis/ex1b/Faddeeva.cc > CMakeFiles/ex1.dir/Faddeeva.cc.i
+
+CMakeFiles/ex1.dir/Faddeeva.cc.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/ex1.dir/Faddeeva.cc.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/ex1b/Faddeeva.cc -o CMakeFiles/ex1.dir/Faddeeva.cc.s
+
 # Object files for target ex1
 ex1_OBJECTS = \
 "CMakeFiles/ex1.dir/main.cpp.o" \
 "CMakeFiles/ex1.dir/EuropeanOption.cpp.o" \
 "CMakeFiles/ex1.dir/Calibration.cpp.o" \
-"CMakeFiles/ex1.dir/Market.cpp.o" \
 "CMakeFiles/ex1.dir/SPXOption.cpp.o" \
-"CMakeFiles/ex1.dir/VIXOption.cpp.o"
+"CMakeFiles/ex1.dir/VIXOption.cpp.o" \
+"CMakeFiles/ex1.dir/Faddeeva.cc.o"
 
 # External object files for target ex1
 ex1_EXTERNAL_OBJECTS =
@@ -150,9 +150,9 @@ ex1_EXTERNAL_OBJECTS =
 ex1: CMakeFiles/ex1.dir/main.cpp.o
 ex1: CMakeFiles/ex1.dir/EuropeanOption.cpp.o
 ex1: CMakeFiles/ex1.dir/Calibration.cpp.o
-ex1: CMakeFiles/ex1.dir/Market.cpp.o
 ex1: CMakeFiles/ex1.dir/SPXOption.cpp.o
 ex1: CMakeFiles/ex1.dir/VIXOption.cpp.o
+ex1: CMakeFiles/ex1.dir/Faddeeva.cc.o
 ex1: CMakeFiles/ex1.dir/build.make
 ex1: CMakeFiles/ex1.dir/link.txt
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/mnt/c/code/Thesis/ex1b/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Linking CXX executable ex1"

@@ -9,8 +9,7 @@
 #include <utility>
 #include <vector>
 #include <complex>
-#include "Market.h"
-#define I std::complex<double>(0.0,1.0)
+
 
 class EuropeanOption {
 private:
@@ -18,15 +17,16 @@ private:
 
 public:
 // Public member data for convenience only
-    static Market market;
+//    static Market market;
+    static double r, q, kappa, theta, sigma, rho, v0, S0;
+    static unsigned nParameters;
     double K = 0; // Strike price
     double T = 0; // Expiry date
     std::string optType; // Option name (call, put)
 
-    // integration and CF parameters:
-    static constexpr unsigned int M = 64;
     double N = 200;
     std::string cfType;
+//    static std::vector<double> xGauss, wGauss;
 
 public:
 // Constructors
@@ -45,7 +45,7 @@ public:
 
 private:
     virtual std::complex<double> CharFunc(std::complex<double> u) const = 0;
-    virtual std::vector<std::complex<double>> JacCharFunc(std::complex<double> u) const = 0;
+    virtual std::vector<std::complex<double>> JacobianCF(std::complex<double> u) const = 0;
 };
 
 #endif //EX1_EUROPEANOPTION_H

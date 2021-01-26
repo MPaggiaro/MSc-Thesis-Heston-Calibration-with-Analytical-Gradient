@@ -57,18 +57,18 @@ include CMakeFiles/lin.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/lin.dir/flags.make
 
-CMakeFiles/lin.dir/cfg.cpp.o: CMakeFiles/lin.dir/flags.make
-CMakeFiles/lin.dir/cfg.cpp.o: ../cfg.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/lin/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lin.dir/cfg.cpp.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lin.dir/cfg.cpp.o -c /mnt/c/code/Thesis/lin/cfg.cpp
+CMakeFiles/lin.dir/DIS.cpp.o: CMakeFiles/lin.dir/flags.make
+CMakeFiles/lin.dir/DIS.cpp.o: ../DIS.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/mnt/c/code/Thesis/lin/cmake-build-debug/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/lin.dir/DIS.cpp.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/lin.dir/DIS.cpp.o -c /mnt/c/code/Thesis/lin/DIS.cpp
 
-CMakeFiles/lin.dir/cfg.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lin.dir/cfg.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/code/Thesis/lin/cfg.cpp > CMakeFiles/lin.dir/cfg.cpp.i
+CMakeFiles/lin.dir/DIS.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/lin.dir/DIS.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /mnt/c/code/Thesis/lin/DIS.cpp > CMakeFiles/lin.dir/DIS.cpp.i
 
-CMakeFiles/lin.dir/cfg.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lin.dir/cfg.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/lin/cfg.cpp -o CMakeFiles/lin.dir/cfg.cpp.s
+CMakeFiles/lin.dir/DIS.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/lin.dir/DIS.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /mnt/c/code/Thesis/lin/DIS.cpp -o CMakeFiles/lin.dir/DIS.cpp.s
 
 CMakeFiles/lin.dir/Faddeeva.cc.o: CMakeFiles/lin.dir/flags.make
 CMakeFiles/lin.dir/Faddeeva.cc.o: ../Faddeeva.cc
@@ -85,13 +85,13 @@ CMakeFiles/lin.dir/Faddeeva.cc.s: cmake_force
 
 # Object files for target lin
 lin_OBJECTS = \
-"CMakeFiles/lin.dir/cfg.cpp.o" \
+"CMakeFiles/lin.dir/DIS.cpp.o" \
 "CMakeFiles/lin.dir/Faddeeva.cc.o"
 
 # External object files for target lin
 lin_EXTERNAL_OBJECTS =
 
-lin: CMakeFiles/lin.dir/cfg.cpp.o
+lin: CMakeFiles/lin.dir/DIS.cpp.o
 lin: CMakeFiles/lin.dir/Faddeeva.cc.o
 lin: CMakeFiles/lin.dir/build.make
 lin: CMakeFiles/lin.dir/link.txt
