@@ -15,20 +15,21 @@ double VIXOption::Price() const {
     auto integrand = [&](std::complex<double> u)-> double {
         const std::complex<double> U = - u * a / tau_bar, phi = CharFunc(U);
         const std::complex<double> integrand = phi * exp(-I*u*b/tau_bar) *
-                (1.0 - Faddeeva::erf(K * sqrt(- I * u)/S0)) / pow(-I * u, 3/2);
+                (1.0 - Faddeeva::erf(K * sqrt(- I * u)/S0)) / pow(-I * u, 3/2.0);
         return real(integrand);
     };
     double integral = 0.0;
 
     // Imaginary shift of u (as explained in Pacati):
-    const double zeta_T = tau_bar / ( a * pow(sigma,2)/(2*kappa));
+    // const double zeta_T = tau_bar / ( a * pow(sigma,2)/(2*kappa) * (1 - exp(-kappa*T)));
+    // with this value it explodes. Maybe we got some computation wrong.
+    double zeta_T = 2;
 
     for (int i = 0; i < xGauss.size(); ++i)
     {
         integral += N/2 * wGauss[i] * (integrand(N/2 + N/2*xGauss[i] + zeta_T/2 * I)
                 + integrand(N/2 - N/2*xGauss[i] + zeta_T/2 * I));
     }
-
     return S0 * exp(-r*T)/(2 * sqrt(M_PI)) * integral;
 }
 
@@ -36,12 +37,12 @@ std::vector<double> VIXOption::Jacobian() const {
     const double a = (1 - exp(- tau_bar * kappa))/kappa,
             b = theta * (tau_bar - a),
     // Imaginary shift of u (as explained in Pacati):
-            zeta_T = tau_bar / ( a * pow(sigma,2)/(2*kappa));
+            zeta_T = 2; // = tau_bar / ( a * pow(sigma,2)/(2*kappa));
     auto partial_integrand = [&](std::complex<double> u)-> std::complex<double> {
         const std::complex<double> U = - u * a / tau_bar, phi = CharFunc(U);
         const std::complex<double> integrand = S0*exp(-r*T)/(2*sqrt(M_PI)) * phi
                 * exp(-I*u*b/tau_bar) *
-                (1.0 - Faddeeva::erf(K * sqrt(- I * u)/S0)) / pow(-I * u, 3/2);
+                (1.0 - Faddeeva::erf(K * sqrt(- I * u)/S0)) / pow(-I * u, 3/2.0);
         return integrand;
     };
     std::vector<double> integral(nParameters);
@@ -63,17 +64,25 @@ std::vector<double> VIXOption::Jacobian() const {
 std::complex<double> VIXOption::CharFunc(std::complex<double> u) const
 {
     double sigma2 = pow(sigma,2);
-    double ekt = exp(-kappa*T);
-    return exp(-2*kappa*theta/sigma2 * log(1.0 - I*u*sigma2/(2*kappa)*(1 - ekt))
-            + v0 * (I*u*ekt)/(1.0 - I*u*sigma2/(2*kappa)*(1 - ekt)));
+
+    // first form (maybe wrong?)
+//    double ekt = exp(-kappa*T);
+//    return exp(-2*kappa*theta/sigma2 * log(1.0 - I*u*sigma2/(2*kappa)*(1 - ekt))
+//            + v0 * (I*u*ekt)/(1.0 - I*u*sigma2/(2*kappa)*(1 - ekt)));
+
+// second form:
+    auto G = cosh(kappa*T/2) + (kappa - sigma2*I*u)/kappa * sinh(kappa*T/2),
+        F = v0 * I * u / G * exp(-kappa*T/2);
+
+    return pow(exp(kappa*T/2)/G, 2*kappa*theta/sigma2) * exp(F);
 }
 
 std::vector<std::complex<double>> VIXOption::JacobianCF(std::complex<double> u) const
 {
     const double a = (1 - exp(- tau_bar * kappa))/kappa, sigma2 = pow(sigma,2),
             pb_ptheta = tau_bar - a,
-            pb_pkappa = - theta * (tau_bar - a * (kappa*tau_bar + 1))/kappa,
-            pa_pkappa = (tau_bar - a*(kappa*tau_bar - 1))/kappa;
+            pa_pkappa = (tau_bar - a * (kappa*tau_bar + 1))/kappa,
+            pb_pkappa = - theta * pa_pkappa;
 
     auto U = [&](std::complex<double> u)-> std::complex<double> {
         return - u * a / tau_bar;
@@ -87,14 +96,15 @@ std::vector<std::complex<double>> VIXOption::JacobianCF(std::complex<double> u) 
     auto pG_psigma = [&](std::complex<double> u)-> std::complex<double> {
         return - 2 * sigma * I * u / kappa * sinh(kappa*T/2);
     };
-    auto pG_pU = [&](std::complex<double> u)-> std::complex<double> {
-        return (G(u) - exp(-kappa*T/2))/U(u);
-    };
+    auto pG_pu = - sigma2 * I / kappa * sinh(kappa*T/2);
+//    auto pG_pU = [&](std::complex<double> u)-> std::complex<double> {
+//        return (G(u) - exp(-kappa*T/2))/U(u);
+//    };
     auto h_v0 = [&](std::complex<double> u)-> std::complex<double> {
         return F(u)/v0;
     };
     auto h_theta = [&](std::complex<double> u)-> std::complex<double> {
-        return 2*kappa/sigma2 * log(exp(kappa*T/2))/G(u);
+        return 2*kappa/sigma2 * log(exp(kappa*T/2)/G(u));
     };
     auto h_sigma = [&](std::complex<double> u)-> std::complex<double> {
         return - 2*theta/sigma * h_theta(u) - 2*kappa*theta/(sigma2*G(u))*pG_psigma(u)
@@ -105,10 +115,10 @@ std::vector<std::complex<double>> VIXOption::JacobianCF(std::complex<double> u) 
                - v0*u*T/(2*kappa*pow(G(u),2))*(2*kappa*I + u*sigma2);
     };
     auto h_prime_kappa = [&](std::complex<double> u)-> std::complex<double> {
-        return h_kappa(U(u)) - u/T * (F(u)/G(u) - 1.0/G(u) * (2*kappa*theta/sigma2 + F(u)) * pG_pU(u))
+        return h_kappa(U(u)) - u/tau_bar * (F(U(u))/U(u) - 1.0/G(U(u)) * (2*kappa*theta/sigma2 + F(U(u))) * pG_pu)
                            * pa_pkappa;
     };
     std::vector<std::complex<double>> jacobian {h_v0(U(u)), h_theta(U(u)) - I*u/tau_bar * pb_ptheta,
-                                                0.0, h_sigma(U(u)), h_prime_kappa(u) - I*u/tau_bar*pb_pkappa};
+                                                0.0, h_prime_kappa(u) - I*u/tau_bar*pb_pkappa, h_sigma(U(u))};
     return jacobian;
 }

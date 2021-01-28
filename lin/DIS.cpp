@@ -214,7 +214,7 @@ int main() {
 
     //
     VD SPXprices = SPXprice(mp, SPXtarr, S, SPXkarr, r, (int)SPXkarr.size());
-    VD VIXprices = VIXprice(mp, VIXtarr, S, VIXkarr, r, (int)VIXkarr.size());
+    VD VIXprices = VIXprice(mp, VIXtarr, tbar, VIXkarr, r, (int)VIXkarr.size());
     VD optPrices;
     optPrices.reserve(SPXprices.size() + VIXprices.size());
     optPrices.insert(optPrices.end(), SPXprices.begin(), SPXprices.end());
