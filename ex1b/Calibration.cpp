@@ -19,8 +19,7 @@ Calibration::Calibration(std::vector<double> strikes, std::vector<double> maturi
     EuropeanOption::q = q;
     EuropeanOption::nParameters = nParameters;
 
-//    EuropeanOption::xGauss = boost::math::quadrature::gauss<double, 64>::abscissa();
-//    EuropeanOption::wGauss = boost::math::quadrature::gauss<double, 64>::weights();
+
 }
 
 Calibration::Calibration(std::vector<double> SPX_strikes, std::vector<double> SPX_maturities,
@@ -107,15 +106,13 @@ void computeGradients(double *parameters, double *gradient, int m, int n, void *
 }
 
 void calibrate (const Calibration &calibration) {
-    double marketPrices[calibration.SPX_options.size() + calibration.VIX_options.size()];
 
+    double marketPrices[calibration.size()];
     double marketParameters[] = {EuropeanOption::v0, EuropeanOption::theta, EuropeanOption::rho,
                                  EuropeanOption::kappa, EuropeanOption::sigma};
     // Market prices:
     computePrices(marketParameters,marketPrices, EuropeanOption::nParameters,
                   calibration.size(), (void *) &calibration);
-
-    // debug:
 
     // algorithm parameters
     double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
@@ -125,7 +122,6 @@ void calibrate (const Calibration &calibration) {
     opts[2]=1E-10;       // ||Dp||_2
     opts[3]=1E-10;       // ||e||_2
     opts[4]= LM_DIFF_DELTA; // finite difference if used
-
     // >>> Enter calibrating routine >>>
     double start_s = clock();
     double p[EuropeanOption::nParameters];
@@ -142,7 +138,7 @@ void calibrate (const Calibration &calibration) {
               p[3] << "\t" << p[4] << std::endl;
 
     dlevmar_der(computePrices, computeGradients, p, marketPrices, EuropeanOption::nParameters,
-                calibration.size(), 3000, opts, info, nullptr, nullptr, (void *) &calibration);
+                calibration.size(), 300, opts, info, nullptr, nullptr, (void *) &calibration);
 
     double stop_s = clock();
     std::cout << "Optimum found:" << std::scientific << std::setprecision(8) << "\t"<< p[0]<< "\t"
@@ -169,9 +165,9 @@ void calibrate (const Calibration &calibration) {
 
     std::cout << "\r-------- -------- -------- Computational cost -------- -------- --------"<<std::endl;
     std::cout << "\r          Time cost: "<< double(stop_s - start_s) /CLOCKS_PER_SEC << " seconds "<<std::endl;
-    std::cout << "         Iterations: " << int(info[5]) << std::endl;
-    std::cout << "         pv E_value: " << int(info[7]) << std::endl;
-    std::cout << "        Jac E_value: "<< int(info[8]) << std::endl;
+    std::cout << "         # iterations: " << int(info[5]) << std::endl;
+    std::cout << "# price evaluations: " << int(info[7]) << std::endl;
+    std::cout << "# Jac. evaluations: "<< int(info[8]) << std::endl;
     std::cout << "# of lin sys solved: " << int(info[9])<< std::endl; //The attempts to reduce error
     std::cout << "\r-------- -------- -------- Residuals -------- -------- --------"<<std::endl;
     std::cout << "\r          ||e0||_2: " << info[0] << std::endl;

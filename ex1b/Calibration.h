@@ -16,6 +16,8 @@ public:
     std::vector<SPXOption> SPX_options;
     std::vector<VIXOption> VIX_options;
 
+
+
     Calibration(std::vector<double> SPX_strikes, std::vector<double> SPX_maturities, double *parameters,
                 double r, double S0, double q = 0.0, unsigned nParameters = 5);
 

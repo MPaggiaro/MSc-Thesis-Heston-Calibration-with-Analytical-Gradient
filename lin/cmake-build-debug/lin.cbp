@@ -82,7 +82,7 @@
 				</MakeCommands>
 			</Target>
 		</Build>
-		<Unit filename="/mnt/c/code/Thesis/lin/DIS.cpp">
+		<Unit filename="/mnt/c/code/Thesis/lin/CFG.cpp">
 			<Option target="lin"/>
 		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/lin/Faddeeva.cc">
