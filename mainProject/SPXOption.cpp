@@ -11,45 +11,48 @@
 // Functions that calculate option price and sensitivities
 double SPXOption::Price() const
 {
+    double integral = 0.0;
     auto integrand = [&](double u)-> double {
-        const std::complex<double> phi = CharFunc(u-I);
-        const std::complex<double> integrand = exp(-I*u*log(K))*exp(I*u*r*T)
-                                               *(phi - 1.0)/(I*u*(1.0+I*u));
-        return real(integrand);
+        std::complex<double> integrand = exp(I*u*log(S0 / K)) *
+                                               CharFunc(u - 0.5 * I);
+        return real(integrand) / (pow(u,2) + 0.25);
     };
 
-    double integral = 0.0;
     for (int i = 0; i < xGauss.size(); ++i)
         integral += N/2*(integrand(N/2 + N/2*xGauss[i]) + integrand(N/2 - N/2*xGauss[i]))
                     *wGauss[i];
 
-    double price = integral/M_PI + std::max(1-exp(log(K)-r*T),0.0);
-    // Case put:
+    double price = S0*exp(-q*T) - sqrt(S0*K)/M_PI * exp(-r*T)*integral;
+    // Case put: put-call parity.
     if (optType == "P")
         price = price - S0*exp(-q*T) + K*exp(-r*T);
-
     return price;
 }
 
 std::vector<double> SPXOption::Jacobian() const
 {
-    auto partial_integrand = [&](double v)->std::complex<double> {
-        // We don't have the evaluation of the characteristic function here.
-        return 1/M_PI * exp(-I * v * log(K)) * exp(I * v * r * T)
-               / (I * v * (1.0 + I * v));
-    };
-
     std::vector<double> integral(nParameters);
+    auto exp_part = [&](double u)->std::complex<double> {
+        // We don't have the evaluation of the characteristic function here.
+        return - sqrt(S0*K)/M_PI * exp(- r * T) * exp(I * u * log(S0/K));
+    };
+    auto u_part = [&](double u)-> double {
+        return 1.0 / (pow(u,2) + 0.25);
+    };
     for (int i = 0; i < xGauss.size(); ++i)
     {
-        auto u_up = N/2 + N/2*xGauss[i], u_down = N/2 - N/2*xGauss[i];
-        auto phi_up = JacobianCF(u_up - I), phi_down = JacobianCF(u_down - I);
-        auto part_int_up = partial_integrand(u_up), part_int_down = partial_integrand(u_down);
+        auto u_up = N/2 + N/2*xGauss[i],
+                u_down = N/2 - N/2*xGauss[i];
+        // evaluation of the Jacobian vector:
+        auto phi_up = JacobianCF(u_up - 0.5*I), phi_down = JacobianCF(u_down - 0.5*I);
+        auto exp_part_up = exp_part(u_up), exp_part_down = exp_part(u_down);
+        auto u_part_up = u_part(u_up), u_part_down = u_part(u_down);
 
-        for (int j = 0; j < nParameters; ++j) {
-            integral[j] += N/2 * wGauss[i] * (real(phi_up[j]*part_int_up) +
-                    real(phi_down[j]*part_int_down));
-        }
+        for (int j = 0; j < nParameters; ++j)
+            integral[j] += N/2 * wGauss[i] *
+                           (real(phi_up[j] * exp_part_up) * u_part_up
+                            + real(phi_down[j] * exp_part_down) * u_part_down);
+
     }
     return integral;
 }

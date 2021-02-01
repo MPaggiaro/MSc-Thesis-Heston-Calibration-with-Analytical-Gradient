@@ -58,13 +58,16 @@ int main()
     Calibration calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
                             marketParameters, r, S0);
 
+    // analytical gradient:
     calibrate(calibration);
+    // numerical gradient:
     calibrate(calibration, "Numerical");
 
-    auto VIX_prices = calibration.VIX_Prices();
-
-    Calibration calibration1(SPX_strikes, SPX_maturities, marketParameters, r, S0);
-    calibrate(calibration1);
+//    auto VIX_prices = calibration.VIX_Prices();
+//
+//    Calibration calibration1(SPX_strikes, SPX_maturities, marketParameters, r, S0);
+//    calibrate(calibration1);
+//    auto SPX_prices = calibration.SPX_Prices();
 
     return 0;
 }

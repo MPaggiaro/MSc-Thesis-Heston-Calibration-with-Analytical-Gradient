@@ -6,30 +6,6 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/code/Thesis/mainProject/Calibration.cpp
-iostream
--
-iomanip
--
-levmar/levmar.h
--
-Calibration.h
-/mnt/c/code/Thesis/mainProject/Calibration.h
-
-/mnt/c/code/Thesis/mainProject/Calibration.h
-utility
--
-vector
--
-memory
--
-EuropeanOption.h
-/mnt/c/code/Thesis/mainProject/EuropeanOption.h
-SPXOption.h
-/mnt/c/code/Thesis/mainProject/SPXOption.h
-VIXOption.h
-/mnt/c/code/Thesis/mainProject/VIXOption.h
-
 /mnt/c/code/Thesis/mainProject/EuropeanOption.h
 string
 -
@@ -40,13 +16,13 @@ vector
 complex
 -
 
+/mnt/c/code/Thesis/mainProject/SPXOption.cpp
+SPXOption.h
 /mnt/c/code/Thesis/mainProject/SPXOption.h
-utility
+boost/math/quadrature/gauss.hpp
 -
-EuropeanOption.h
-/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 
-/mnt/c/code/Thesis/mainProject/VIXOption.h
+/mnt/c/code/Thesis/mainProject/SPXOption.h
 utility
 -
 EuropeanOption.h
