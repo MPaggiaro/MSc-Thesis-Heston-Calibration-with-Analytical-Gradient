@@ -16,8 +16,6 @@ public:
     std::vector<SPXOption> SPX_options;
     std::vector<VIXOption> VIX_options;
 
-
-
     Calibration(std::vector<double> SPX_strikes, std::vector<double> SPX_maturities, double *parameters,
                 double r, double S0, double q = 0.0, unsigned nParameters = 5);
 
@@ -31,7 +29,6 @@ public:
     std::vector<double> Prices() const;
     std::vector<double> SPX_Prices() const;
     std::vector<double> VIX_Prices() const;
-
 };
 
 void computePrices(double *parameters, double *prices, int m, int n, void *data);

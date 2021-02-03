@@ -65,6 +65,9 @@ std::vector<double> Calibration::Prices() const {
 
 void computePrices(double *parameters, double *prices, int m, int n, void *data)
 {
+    // unused variables (however needed for Levmar):
+    (void)m; (void)n;
+
     auto * calibration = static_cast<Calibration *> (data);
     Calibration::setParameters(parameters);
     for (unsigned i = 0; i < calibration->SPX_options.size(); ++i)
@@ -79,6 +82,9 @@ void computePrices(double *parameters, double *prices, int m, int n, void *data)
 
 void computeGradients(double *parameters, double *gradient, int m, int n, void *data)
 {
+    // unused variables (however needed for Levmar):
+    (void)m; (void)n;
+
     auto * calibration = static_cast<Calibration *> (data);
     Calibration::setParameters(parameters);
 
@@ -109,8 +115,8 @@ void calibrate (const Calibration &calibration, const std::string &gradientType)
     double marketParameters[] = {EuropeanOption::v0, EuropeanOption::theta, EuropeanOption::rho,
                                  EuropeanOption::kappa, EuropeanOption::sigma};
     // Market prices:
-    computePrices(marketParameters,marketPrices, EuropeanOption::nParameters,
-                  calibration.size(), (void *) &calibration);
+    computePrices(marketParameters,marketPrices, (int)EuropeanOption::nParameters,
+                  (int)calibration.size(), (void *) &calibration);
 
     // algorithm parameters
     int itmax = 300;
@@ -138,13 +144,13 @@ void calibrate (const Calibration &calibration, const std::string &gradientType)
               p[3] << "\t" << p[4] << std::endl;
 
     if (gradientType == "Analytical")
-        dlevmar_der(computePrices, computeGradients, p, marketPrices, EuropeanOption::nParameters,
-                calibration.size(), itmax, opts, info, nullptr, nullptr,
-                (void *) &calibration);
+        dlevmar_der(computePrices, computeGradients, p, marketPrices, (int)EuropeanOption::nParameters,
+                    (int)calibration.size(), itmax, opts, info, nullptr, nullptr,
+                    (void *) &calibration);
 
     else
-        dlevmar_dif(computePrices, p, marketPrices, EuropeanOption::nParameters,
-                    calibration.size(), itmax, opts, info, nullptr, nullptr,
+        dlevmar_dif(computePrices, p, marketPrices, (int)EuropeanOption::nParameters,
+                    (int)calibration.size(), itmax, opts, info, nullptr, nullptr,
                     (void *) &calibration);
 
     double stop_s = clock();

@@ -9,6 +9,12 @@
 /mnt/c/code/Thesis/tryspace/main.cpp
 iostream
 -
+vector
+-
+algorithm
+-
+limits
+-
 boost/math/quadrature/gauss.hpp
 -
 

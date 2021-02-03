@@ -6,6 +6,34 @@
 
 #IncludeRegexTransform: 
 
+/mnt/c/code/Thesis/mainProject/Calibration.cpp
+iostream
+-
+iomanip
+-
+levmar/levmar.h
+-
+Calibration.h
+/mnt/c/code/Thesis/mainProject/Calibration.h
+
+/mnt/c/code/Thesis/mainProject/Calibration.h
+utility
+-
+vector
+-
+memory
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
+SPXOption.h
+/mnt/c/code/Thesis/mainProject/SPXOption.h
+VIXOption.h
+/mnt/c/code/Thesis/mainProject/VIXOption.h
+
+/mnt/c/code/Thesis/mainProject/EuropeanOption.cpp
+EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
+
 /mnt/c/code/Thesis/mainProject/EuropeanOption.h
 string
 -
@@ -13,6 +41,10 @@ utility
 -
 vector
 -
+complex
+-
+
+/mnt/c/code/Thesis/mainProject/Faddeeva.hh
 complex
 -
 
@@ -27,4 +59,28 @@ utility
 -
 EuropeanOption.h
 /mnt/c/code/Thesis/mainProject/EuropeanOption.h
+
+/mnt/c/code/Thesis/mainProject/VIXOption.cpp
+VIXOption.h
+/mnt/c/code/Thesis/mainProject/VIXOption.h
+Faddeeva.hh
+/mnt/c/code/Thesis/mainProject/Faddeeva.hh
+boost/math/quadrature/gauss.hpp
+-
+
+/mnt/c/code/Thesis/mainProject/VIXOption.h
+utility
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
+
+/mnt/c/code/Thesis/mainProject/main.cpp
+iostream
+-
+vector
+-
+EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
+Calibration.h
+/mnt/c/code/Thesis/mainProject/Calibration.h
 
