@@ -10,18 +10,20 @@
 
 class VIXOption : public EuropeanOption {
 public:
-//    double tau_bar = 30.0/365;
+    // index needed for computation of displacement:
+    int indexTPlusTau = 0;
     // Constructor:
-    VIXOption(const double K, const double T, std::string  optType = "C",
-              std::string cfType = "Cui",const double N = 200):
-            EuropeanOption(K,T,std::move(optType),std::move(cfType),N){ }
+    VIXOption(double K, double T, std::string  optType = "C",
+              std::string cfType = "Cui", double N = 200);
 
     double Price() const override;
     std::vector<double> Jacobian() const override;
+    void SetIndexTPlusTau();
 
 private:
     std::complex<double> CharFunc(std::complex<double> u) const override;
     std::vector<std::complex<double>> JacobianCF(std::complex<double> u) const override;
+    double IntegralPhi() const override;
 };
 
 

@@ -3,6 +3,8 @@
 //
 
 #include "EuropeanOption.h"
+#include <limits>
+#include <algorithm>
 
 // definition of static members:
 double EuropeanOption::r, EuropeanOption::q, EuropeanOption::kappa,
@@ -12,6 +14,11 @@ unsigned EuropeanOption::nParameters;
 std::vector<double> EuropeanOption::times, EuropeanOption::deltaTimes,
     EuropeanOption::phiT;
 // std::vector<double> EuropeanOption::xGauss, EuropeanOption::wGauss;
+
+EuropeanOption::EuropeanOption (const double K, const double T, std::string  optType,
+                                std::string cfType,const double N):
+        K(K),T(T),optType(std::move(optType)),N(N),cfType(std::move(cfType)) { }
+
 
 void EuropeanOption::copy(const EuropeanOption& o2)
 {
@@ -26,6 +33,15 @@ EuropeanOption& EuropeanOption::operator = (const EuropeanOption& opt2)
     if (this == &opt2) return *this;
     copy (opt2);
     return *this;
+}
+
+void EuropeanOption::SetIndexT()
+{
+    // find i such that times[i] = T:
+    auto it = std::find_if(times.begin(),times.end(),
+                           [&](double time)
+                           { return fabs(T - time) < std::numeric_limits<double>::epsilon(); });
+    indexT = it - times.begin();
 }
 
 

@@ -58,23 +58,49 @@ int main()
             0.08219178, 0.08219178, 0.16438356, 0.16438356, 0.16438356, 0.16438356,
             0.16438356, 0.24657534, 0.24657534, 0.24657534, 0.24657534, 0.24657534};
 
-    Calibration calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
-                            marketParameters, r, S0);
-
-    // analytical gradient:
-    calibrate(calibration);
-    // numerical gradient:
-    calibrate(calibration, "Numerical");
+    //Calibration calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
+      //                      marketParameters, r, S0);
 
     // try new displacement initialization:
-    std::vector<double> displacement_vector(15,0.0);
-    Calibration displaced_calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
-                                      displacement_vector,marketParameters, r, S0);
-//    auto VIX_prices = calibration.VIX_Prices();
-//
-//    Calibration calibration1(SPX_strikes, SPX_maturities, marketParameters, r, S0);
-//    calibrate(calibration1);
-//    auto SPX_prices = calibration.SPX_Prices();
+    std::vector<double> displacement_vector(14,5e-4);
+//    Calibration displaced_calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
+//                                      displacement_vector,marketParameters, r, S0);
+//    auto prices = displaced_calibration.VIX_Prices();
 
+    // Let's build the calibration in an alternative (more correct way):
+    // Longer parameters vector:
+    double parametersWithDisplacement[5 + displacement_vector.size()];
+    for (int i = 0; i < 5; ++i)
+    {
+        parametersWithDisplacement[i] = marketParameters[i];
+    }
+    for (int i = 0; i < displacement_vector.size(); ++i)
+    {
+        parametersWithDisplacement[i + 5] = displacement_vector[i];
+    }
+
+    Calibration calibration (SPX_strikes, SPX_maturities, VIX_strikes,
+                             VIX_maturities, parametersWithDisplacement,
+                             r, S0, true);
+
+    // calibrate(calibration);
+    double initialGuess[EuropeanOption::nParameters];
+    initialGuess[0] = 0.2;
+    initialGuess[1] = 0.2;
+    initialGuess[2] = -0.6;
+    initialGuess[3] = 1.2;
+    initialGuess[4] = 0.3;
+    if (EuropeanOption::nParameters > 5)
+        for (int i = 5; i < EuropeanOption::nParameters; ++i)
+            initialGuess[i] = 2e-4;
+
+    // Let's debug this:
+//    auto gradients = calibration.Gradients();
+//    double gradientP[calibration.size() * EuropeanOption::nParameters];
+//    computeGradients(initialGuess, gradientP, 1,1, (void * ) &calibration);
+
+    calibrate(calibration, initialGuess);
+    // calibrate(calibration);
+    std::cout << "End of program" << std::endl;
     return 0;
 }

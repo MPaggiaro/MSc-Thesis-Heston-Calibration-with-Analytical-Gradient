@@ -6,6 +6,7 @@ CMakeFiles/ex1.dir/Calibration.cpp.o: ../Calibration.h
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../EuropeanOption.h
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../SPXOption.h
 CMakeFiles/ex1.dir/Calibration.cpp.o: ../VIXOption.h
+CMakeFiles/ex1.dir/Calibration.cpp.o: ../doublecomparison.h
 
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o: ../EuropeanOption.cpp
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o: ../EuropeanOption.h
@@ -21,6 +22,9 @@ CMakeFiles/ex1.dir/VIXOption.cpp.o: ../EuropeanOption.h
 CMakeFiles/ex1.dir/VIXOption.cpp.o: ../Faddeeva.hh
 CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.cpp
 CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.h
+
+CMakeFiles/ex1.dir/doublecomparison.cpp.o: ../doublecomparison.cpp
+CMakeFiles/ex1.dir/doublecomparison.cpp.o: ../doublecomparison.h
 
 CMakeFiles/ex1.dir/main.cpp.o: ../Calibration.h
 CMakeFiles/ex1.dir/main.cpp.o: ../EuropeanOption.h

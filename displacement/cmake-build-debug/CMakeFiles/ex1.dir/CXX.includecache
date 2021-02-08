@@ -15,8 +15,12 @@ levmar/levmar.h
 -
 algorithm
 -
+iterator
+-
 Calibration.h
 /mnt/c/code/Thesis/displacement/Calibration.h
+doublecomparison.h
+/mnt/c/code/Thesis/displacement/doublecomparison.h
 
 /mnt/c/code/Thesis/displacement/Calibration.h
 utility
@@ -53,6 +57,8 @@ utility
 -
 EuropeanOption.h
 /mnt/c/code/Thesis/displacement/EuropeanOption.h
+
+/mnt/c/code/Thesis/displacement/doublecomparison.h
 
 /mnt/c/code/Thesis/displacement/main.cpp
 iostream

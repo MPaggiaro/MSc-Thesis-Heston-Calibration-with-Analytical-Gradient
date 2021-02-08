@@ -112,6 +112,12 @@
 		<Unit filename="/mnt/c/code/Thesis/displacement/VIXOption.h">
 			<Option target="ex1"/>
 		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/displacement/doublecomparison.cpp">
+			<Option target="ex1"/>
+		</Unit>
+		<Unit filename="/mnt/c/code/Thesis/displacement/doublecomparison.h">
+			<Option target="ex1"/>
+		</Unit>
 		<Unit filename="/mnt/c/code/Thesis/displacement/main.cpp">
 			<Option target="ex1"/>
 		</Unit>

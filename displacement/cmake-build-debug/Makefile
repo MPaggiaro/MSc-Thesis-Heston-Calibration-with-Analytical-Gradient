@@ -258,6 +258,33 @@ VIXOption.cpp.s:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.s
 .PHONY : VIXOption.cpp.s
 
+doublecomparison.o: doublecomparison.cpp.o
+
+.PHONY : doublecomparison.o
+
+# target to build an object file
+doublecomparison.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.o
+.PHONY : doublecomparison.cpp.o
+
+doublecomparison.i: doublecomparison.cpp.i
+
+.PHONY : doublecomparison.i
+
+# target to preprocess a source file
+doublecomparison.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.i
+.PHONY : doublecomparison.cpp.i
+
+doublecomparison.s: doublecomparison.cpp.s
+
+.PHONY : doublecomparison.s
+
+# target to generate assembly for a file
+doublecomparison.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.s
+.PHONY : doublecomparison.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -309,6 +336,9 @@ help:
 	@echo "... VIXOption.o"
 	@echo "... VIXOption.i"
 	@echo "... VIXOption.s"
+	@echo "... doublecomparison.o"
+	@echo "... doublecomparison.i"
+	@echo "... doublecomparison.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"

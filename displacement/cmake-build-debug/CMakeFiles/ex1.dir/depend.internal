@@ -7,6 +7,7 @@ CMakeFiles/ex1.dir/Calibration.cpp.o
  /mnt/c/code/Thesis/displacement/EuropeanOption.h
  /mnt/c/code/Thesis/displacement/SPXOption.h
  /mnt/c/code/Thesis/displacement/VIXOption.h
+ /mnt/c/code/Thesis/displacement/doublecomparison.h
 CMakeFiles/ex1.dir/EuropeanOption.cpp.o
  /mnt/c/code/Thesis/displacement/EuropeanOption.cpp
  /mnt/c/code/Thesis/displacement/EuropeanOption.h
@@ -22,6 +23,9 @@ CMakeFiles/ex1.dir/VIXOption.cpp.o
  /mnt/c/code/Thesis/displacement/Faddeeva.hh
  /mnt/c/code/Thesis/displacement/VIXOption.cpp
  /mnt/c/code/Thesis/displacement/VIXOption.h
+CMakeFiles/ex1.dir/doublecomparison.cpp.o
+ /mnt/c/code/Thesis/displacement/doublecomparison.cpp
+ /mnt/c/code/Thesis/displacement/doublecomparison.h
 CMakeFiles/ex1.dir/main.cpp.o
  /mnt/c/code/Thesis/displacement/Calibration.h
  /mnt/c/code/Thesis/displacement/EuropeanOption.h
