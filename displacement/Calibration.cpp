@@ -252,77 +252,96 @@ void calibrate(const Calibration &calibration, const double *initialGuess,
 
     // Search parameters:
     double p[EuropeanOption::nParameters];
-//    p[0] = 0.2;
-//    p[1] = 0.2;
-//    p[2] = -0.6;
-//    p[3] = 1.2;
-//    p[4] = 0.3;
-//    if (EuropeanOption::nParameters > 5)
-//        for (int i = 5; i < EuropeanOption::nParameters; ++i)
-//            p[i] = 2e-4;
-
     // Set initial guess:
     for (int i = 0; i < EuropeanOption::nParameters; ++i)
     {
         p[i] = initialGuess[i];
     }
 
-    std::cout << "\r-------- -------- -------- Heston Model Calibrator -------- -------- --------" << std::endl;
-    std::cout << "Parameters:" << "\t" << "v0" << "\t" << "theta" << "\t" << "rho"
-              << "\t" << "kappa" << "\t" << "sigma" << std::endl;
-    std::cout << "\rInitial point:" << "\t" << std::scientific << std::setprecision(8)
-              << p[0] << "\t" << p[1] << "\t" << p[2] << "\t" <<
-              p[3] << "\t" << p[4] << std::endl;
-
+    // Perform calibration with Levenberg-Marquardt algorithm:
     if (gradientType == "Analytical")
         dlevmar_der(computePrices, computeGradients, p, marketPrices, (int) EuropeanOption::nParameters,
                     (int) calibration.size(), itMax, opts, info, nullptr, nullptr,
                     (void *) &calibration);
-
-    else
+    else // numerical gradient:
         dlevmar_dif(computePrices, p, marketPrices, (int) EuropeanOption::nParameters,
                     (int) calibration.size(), itMax, opts, info, nullptr, nullptr,
                     (void *) &calibration);
 
     double stop_s = clock();
-
     // reset market parameters back to start:
     calibration.setParameters(marketParameters);
 
-    // info on the calibration:
-    std::cout << "Optimum found:" << std::scientific << std::setprecision(8) << "\t" << p[0] << "\t"
-              << p[1] << "\t" << p[2] << "\t" << p[3] << "\t" << p[4] << std::endl;
-    std::cout << "Real optimum:" << "\t" << marketParameters[0] << "\t" << marketParameters[1]
-              << "\t" << marketParameters[2] << "\t" << marketParameters[3] << "\t" <<
-              marketParameters[4] << std::endl;
+    // Print calibration result:
+    printCalibrationResult(initialGuess, p, marketParameters, (int)EuropeanOption::nParameters,
+                           info, opts, start_s, stop_s);
+}
+
+void printCalibrationResult(const double *initialGuess, const double *searchParameters,
+                            const double *marketParameters, const int size, const double *info,
+                            const double *opts, const double start_s, const double stop_s)
+{
+    std::cout << "-------- -------- -------- Heston Model Calibrator -------- -------- --------" << std::endl;
+    // To be continued ...
+    // values for controlling format
+    const int column_width = 16;
+    const int num_fields = 4;
+    const std::string sep = " |" ;
+    const int total_width = num_fields * column_width + sep.size() * num_fields ;
+    const std::string line = sep + std::string( total_width-1, '-' ) + '|' ;
+
+    std::vector<std::string> parameterNames(size, "phi");
+    parameterNames[0] = "v0", parameterNames[1] = "theta", parameterNames[2] = "rho",
+    parameterNames[3] = "kappa", parameterNames[4] = "sigma";
+    if (size > 5)
+        for (int i = 5; i < size; ++i)
+        {
+            parameterNames[i] += std::to_string(i - 5);
+        }
+    // First, print names of columns:
+    std::cout << line << '\n' << sep
+              << std::setw(column_width) << "Parameter:" << sep
+              << std::setw(column_width) << "Initial value:" << sep
+              << std::setw(column_width) << "Optimum found:" << sep
+              << std::setw(column_width) << "Real optimum:" << sep << '\n' << line << '\n' ;
+
+    for (int i = 0; i < size; ++i)
+    {
+        std::cout << sep << std::setw(column_width) << parameterNames[i]
+                  << std::scientific << std::setprecision(8)
+                  << sep << std::setw(column_width) << initialGuess[i]
+                  << sep << std::setw(column_width) << searchParameters[i]
+                  << sep << std::setw(column_width) << marketParameters[i]
+                  << sep << '\n';
+    }
+    std::cout << line << '\n';
 
     if (int(info[6]) == 6) {
-        std::cout << "\r Solved: stopped by small ||e||_2 = " << info[1] << " < " << opts[3] << std::endl;
+        std::cout << "Solved: stopped by small ||e||_2 = "<< info[1] << " < " << opts[3]<< std::endl;
     } else if (int(info[6]) == 1) {
-        std::cout << "\r Solved: stopped by small gradient J^T e = " << info[2] << " < " << opts[1] << std::endl;
+        std::cout << "Solved: stopped by small gradient J^T e = " << info[2] << " < " << opts[1]<< std::endl;
     } else if (int(info[6]) == 2) {
-        std::cout << "\r Solved: stopped by small change Dp = " << info[3] << " < " << opts[2] << std::endl;
+        std::cout << "Solved: stopped by small change Dp = " << info[3] << " < " << opts[2]<< std::endl;
     } else if (int(info[6]) == 3) {
-        std::cout << "\r Unsolved: stopped by it_max " << std::endl;
+        std::cout << "Unsolved: stopped by it_max " << std::endl;
     } else if (int(info[6]) == 4) {
-        std::cout << "\r Unsolved: singular matrix. Restart from current p with increased mu" << std::endl;
+        std::cout << "Unsolved: singular matrix. Restart from current p with increased mu"<< std::endl;
     } else if (int(info[6]) == 5) {
-        std::cout << "\r Unsolved: no further error reduction is possible. Restart with increased mu" << std::endl;
+        std::cout << "Unsolved: no further error reduction is possible. Restart with increased mu"<< std::endl;
     } else if (int(info[6]) == 7) {
-        std::cout << "\r Unsolved: stopped by invalid values, user error" << std::endl;
+        std::cout << "Unsolved: stopped by invalid values, user error"<< std::endl;
     }
 
-    std::cout << "\r-------- -------- -------- Computational cost -------- -------- --------" << std::endl;
-    std::cout << "\r          Time cost: " << double(stop_s - start_s) / CLOCKS_PER_SEC << " seconds " << std::endl;
+    std::cout << "-------- -------- -------- Computational cost -------- -------- --------" << std::endl;
+    std::cout << "          Time cost: " << double(stop_s - start_s) / CLOCKS_PER_SEC << " seconds " << std::endl;
     std::cout << "       # iterations: " << int(info[5]) << std::endl;
     std::cout << "# price evaluations: " << int(info[7]) << std::endl;
     std::cout << " # Jac. evaluations: " << int(info[8]) << std::endl;
     std::cout << "# of lin sys solved: " << int(info[9]) << std::endl; //The attempts to reduce error
-    std::cout << "\r-------- -------- -------- Residuals -------- -------- --------" << std::endl;
-    std::cout << "\r          ||e0||_2: " << info[0] << std::endl;
+    std::cout << "-------- -------- -------- Residuals -------- -------- --------" << std::endl;
+    std::cout << "          ||e0||_2: " << info[0] << std::endl;
     std::cout << "          ||e*||_2: " << info[1] << std::endl;
     std::cout << "       ||J'e||_inf: " << info[2] << std::endl;
     std::cout << "          ||Dp||_2: " << info[3] << std::endl;
 
 }
-

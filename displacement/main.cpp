@@ -63,12 +63,7 @@ int main()
 
     // try new displacement initialization:
     std::vector<double> displacement_vector(14,5e-4);
-//    Calibration displaced_calibration(SPX_strikes, SPX_maturities, VIX_strikes, VIX_maturities,
-//                                      displacement_vector,marketParameters, r, S0);
-//    auto prices = displaced_calibration.VIX_Prices();
 
-    // Let's build the calibration in an alternative (more correct way):
-    // Longer parameters vector:
     double parametersWithDisplacement[5 + displacement_vector.size()];
     for (int i = 0; i < 5; ++i)
     {
@@ -83,7 +78,6 @@ int main()
                              VIX_maturities, parametersWithDisplacement,
                              r, S0, true);
 
-    // calibrate(calibration);
     double initialGuess[EuropeanOption::nParameters];
     initialGuess[0] = 0.2;
     initialGuess[1] = 0.2;
@@ -94,13 +88,8 @@ int main()
         for (int i = 5; i < EuropeanOption::nParameters; ++i)
             initialGuess[i] = 2e-4;
 
-    // Let's debug this:
-//    auto gradients = calibration.Gradients();
-//    double gradientP[calibration.size() * EuropeanOption::nParameters];
-//    computeGradients(initialGuess, gradientP, 1,1, (void * ) &calibration);
-
     calibrate(calibration, initialGuess);
-    // calibrate(calibration);
-    std::cout << "End of program" << std::endl;
+
+    calibrate(calibration, initialGuess, "Numerical");
     return 0;
 }

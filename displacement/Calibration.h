@@ -42,5 +42,8 @@ void computeGradients(double *parameters, double *gradient, int m, int n, void *
 void calibrate (const Calibration &calibration, const double *initialGuess,
                 const std::string &gradientType = "Analytical");
 
+void printCalibrationResult(const double *initialGuess, const double *searchParameters,
+                            const double *marketParameters, int size,
+                            const double *info, const double *opts, double start_s, double stop_s);
 
 #endif //EX1_CALIBRATION_H
