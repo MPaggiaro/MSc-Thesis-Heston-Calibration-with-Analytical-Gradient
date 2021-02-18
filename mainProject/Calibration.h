@@ -7,6 +7,7 @@
 #include <utility>
 #include <vector>
 #include <memory>
+#include <levmar/levmar.h>
 #include "EuropeanOption.h"
 #include "SPXOption.h"
 #include "VIXOption.h"
@@ -16,23 +17,45 @@ public:
     std::vector<SPXOption> SPX_options;
     std::vector<VIXOption> VIX_options;
 
-    Calibration(std::vector<double> SPX_strikes, std::vector<double> SPX_maturities, double *parameters,
+    // Parameters for the levmar algorithm:
+    std::vector<double> info, opts;
+    double startClock = 0.0, stopClock = 0.0;
+
+    // parameter sets for the levmar calibration:
+    std::vector<double> searchParameters;
+
+    Calibration(const std::vector<double> &SPX_strikes,
+                const std::vector<double> &SPX_maturities, double *parameters,
                 double r, double S0, double q = 0.0, unsigned nParameters = 5);
 
-    Calibration(std::vector<double> SPX_strikes, std::vector<double> SPX_maturities,
-                std::vector<double> VIX_strikes, std::vector<double> VIX_maturities,
-                double *parameters, double r, double S0, double q = 0.0, unsigned nParameters = 5);
+    Calibration(const std::vector<double> &SPX_strikes,  const std::vector<double> &SPX_maturities,
+                const std::vector<double> &VIX_strikes, const std::vector<double> &VIX_maturities,
+                double *parameters, double r, double S0, bool displacementFlag = false,
+                double q = 0.0, unsigned nParameters = 5);
 
     static void setParameters (const double *parameters);
+    void saveCalibration (const double *parameters, const double *information);
     unsigned size() const;
+
+    static std::vector<double> IntegralDisplacement() ;
 
     std::vector<double> Prices() const;
     std::vector<double> SPX_Prices() const;
     std::vector<double> VIX_Prices() const;
+
+    std::vector<double> Gradients() const;
+    std::vector<double> SPX_Gradients() const;
+    std::vector<double> VIX_Gradients() const;
+
+    void print(const double *initialGuess) const;
 };
 
 void computePrices(double *parameters, double *prices, int m, int n, void *data);
 void computeGradients(double *parameters, double *gradient, int m, int n, void *data);
-void calibrate (const Calibration &calibration, const std::string &gradientType = "Analytical");
+void calibrate (Calibration &calibration, const double *initialGuess, bool perturbation = false,
+                const std::string &gradientType = "Analytical");
+void testModel (Calibration &calibration, int nIterations, const std::string &gradientType = "Analytical");
+
+void perturbPrices(double *prices, int size);
 
 #endif //EX1_CALIBRATION_H

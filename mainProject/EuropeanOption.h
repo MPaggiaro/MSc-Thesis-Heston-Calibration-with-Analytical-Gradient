@@ -30,10 +30,11 @@ public:
 //    static std::vector<double> xGauss, wGauss;
 
 public:
-// Constructors
-    EuropeanOption(const double K, const double T, std::string  optType = "C",
-                   std::string cfType = "Cui",const double N = 200):
-                   K(K),T(T),optType(std::move(optType)),N(N),cfType(std::move(cfType)){}
+    // index needed for computation of integralPhi:
+    int indexT = 0;
+    // Constructor:
+    EuropeanOption(double K, double T, std::string  optType = "C",
+                   std::string cfType = "Cui", double N = 200);
 
 // Destructor
     virtual ~EuropeanOption();
@@ -42,10 +43,12 @@ public:
 // Functions that calculate option price and (some) sensitivities
     virtual double Price() const = 0;
     virtual std::vector<double> Jacobian() const = 0;
+    void SetIndexT();
 
 private:
     virtual std::complex<double> CharFunc(std::complex<double> u) const = 0;
     virtual std::vector<std::complex<double>> JacobianCF(std::complex<double> u) const = 0;
+    virtual double IntegralPhi() const = 0;
 };
 
 #endif //EX1_EUROPEANOPTION_H

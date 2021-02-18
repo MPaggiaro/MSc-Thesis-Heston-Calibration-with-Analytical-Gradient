@@ -8,14 +8,20 @@
 #define wGauss boost::math::quadrature::gauss<double,64>::weights()
 #define I std::complex<double>(0.0,1.0)
 
+SPXOption::SPXOption (const double K, const double T, std::string  optType,
+                      std::string cfType,const double N):
+        EuropeanOption(K,T,std::move(optType),std::move(cfType),N) { }
+
 // Functions that calculate option price and sensitivities
 double SPXOption::Price() const
 {
     double integral = 0.0;
-    auto integrand = [&](double u)-> double {
+    auto integrand = [&](double u)-> double
+    {
         std::complex<double> integrand = exp(I*u*log(S0 / K)) *
                                                CharFunc(u - 0.5 * I);
-        return real(integrand) / (pow(u,2) + 0.25);
+        auto pow_u = pow(u,2) + 0.25;
+        return real(integrand) * exp(- pow_u * IntegralPhi() ) / pow_u;
     };
 
     for (int i = 0; i < xGauss.size(); ++i)
@@ -32,19 +38,22 @@ double SPXOption::Price() const
 std::vector<double> SPXOption::Jacobian() const
 {
     std::vector<double> integral(nParameters);
-    auto exp_part = [&](double u)->std::complex<double> {
+    auto exp_part = [&](double u)->std::complex<double>
+    {
         // We don't have the evaluation of the characteristic function here.
         return - sqrt(S0*K)/M_PI * exp(- r * T) * exp(I * u * log(S0/K));
     };
-    auto u_part = [&](double u)-> double {
-        return 1.0 / (pow(u,2) + 0.25);
+    auto u_part = [&](double u)-> double
+    {
+        double pow_u = pow(u,2) + 0.25;
+        return exp( - pow_u * IntegralPhi() ) / pow_u;
     };
     for (int i = 0; i < xGauss.size(); ++i)
     {
         auto u_up = N/2 + N/2*xGauss[i],
                 u_down = N/2 - N/2*xGauss[i];
         // evaluation of the Jacobian vector:
-        auto phi_up = JacobianCF(u_up - 0.5*I), phi_down = JacobianCF(u_down - 0.5*I);
+        auto phi_up = JacobianCF(u_up), phi_down = JacobianCF(u_down);
         auto exp_part_up = exp_part(u_up), exp_part_down = exp_part(u_down);
         auto u_part_up = u_part(u_up), u_part_down = u_part(u_down);
 
@@ -97,36 +106,55 @@ std::complex<double> SPXOption::CharFunc(std::complex<double> u) const
 
 std::vector<std::complex<double>> SPXOption::JacobianCF(std::complex<double> u) const
 {
+    auto uMinusHalfI = u - 0.5 * I;
     const double sigma2 = pow(sigma,2);
-    const std::complex<double> ksi = kappa - sigma*rho*I*u,
-            d = sqrt(pow(ksi,2) + pow(sigma,2) * (pow(u,2) + I*u)),
-            A1 = (pow(u,2) + I*u)*sinh(d*(T/2)),
+    const std::complex<double> ksi = kappa - sigma * rho * I * uMinusHalfI,
+            d = sqrt(pow(ksi,2) + pow(sigma,2) * (pow(uMinusHalfI, 2) + I * uMinusHalfI)),
+            A1 = (pow(uMinusHalfI, 2) + I * uMinusHalfI) * sinh(d * (T / 2)),
             A2 = d/v0*cosh(d*(T/2)) + ksi/v0*sinh(d*(T/2)),
             A = A1/A2,
             B = d*exp(kappa*T/2)/(v0*A2), D = log(B),
     // notation: dx_dy = dx/dy.
-    pd_prho = - ksi * sigma * I * u / d,
-            pA2_prho = - sigma * I * u * (2.0 + ksi * T) / (2.0 * d * v0) * (ksi * cosh(d * (T / 2)) + d * sinh(d * (T / 2))),
-            pB_prho = exp(kappa * (T / 2)) / v0 * (1.0 / A2 * pd_prho - d / pow(A2, 2) * pA2_prho),
-            pA1_prho = -I * u * (pow(u, 2) + I * u) * T * ksi * sigma / (2.0 * d) * cosh(d * (T / 2)),
-            pA_prho = 1.0 / A2 * pA1_prho - A / A2 * pA2_prho,
-            pB_pkappa = I / (sigma * u) * pB_prho + B * (T / 2),
-            pd_psigma = (rho / sigma - 1.0 / ksi) * pd_prho + sigma * pow(u, 2) / d,
-            pA1_psigma = (pow(u, 2) + I * u) * (T / 2) * pd_psigma * cosh(d * (T / 2)),
-            pA2_psigma = rho / sigma * pA2_prho - (2.0 + T * ksi) / (v0 * T * ksi * I * u) * pA1_prho + sigma * T * A1 / (2 * v0),
-            pA_psigma = 1.0 / A2 * pA1_psigma - A / A2 * pA2_psigma;
+    pd_pRho = - ksi * sigma * I * uMinusHalfI / d,
+            pA2_pRho = - sigma * I * uMinusHalfI * (2.0 + ksi * T) / (2.0 * d * v0) * (ksi * cosh(d * (T / 2)) + d * sinh(d * (T / 2))),
+            pB_pRho = exp(kappa * (T / 2)) / v0 * (1.0 / A2 * pd_pRho - d / pow(A2, 2) * pA2_pRho),
+            pA1_pRho = -I * uMinusHalfI * (pow(uMinusHalfI, 2) + I * uMinusHalfI) * T * ksi * sigma / (2.0 * d) * cosh(d * (T / 2)),
+            pA_pRho = 1.0 / A2 * pA1_pRho - A / A2 * pA2_pRho,
+            pB_pKappa = I / (sigma * uMinusHalfI) * pB_pRho + B * (T / 2),
+            pd_pSigma = (rho / sigma - 1.0 / ksi) * pd_pRho + sigma * pow(uMinusHalfI, 2) / d,
+            pA1_pSigma = (pow(uMinusHalfI, 2) + I * uMinusHalfI) * (T / 2) * pd_pSigma * cosh(d * (T / 2)),
+            pA2_pSigma = rho / sigma * pA2_pRho - (2.0 + T * ksi) / (v0 * T * ksi * I * uMinusHalfI) * pA1_pRho + sigma * T * A1 / (2 * v0),
+            pA_pSigma = 1.0 / A2 * pA1_pSigma - A / A2 * pA2_pSigma;
 
-    const std::complex<double> h1 = - A/v0,
-            h2 = 2*kappa/sigma2*D - kappa*rho*T*I*u/sigma,
-            h3 = - pA_prho + 2 * kappa * theta / (sigma2 * d) * (pd_prho - d / A2 * pA2_prho) - kappa * theta * T * I * u / sigma,
-            h4 = 1.0 / (sigma*I*u) * pA_prho + 2 * theta / sigma2 * D + 2 * kappa * theta / (sigma2 * B) * pB_pkappa
-                 - theta*rho*T*I*u/sigma,
-            h5 = - pA_psigma - 4 * kappa * theta / pow(sigma, 3) * D + 2 * kappa * theta / (sigma2 * d)
-                                                                       * (pd_psigma - d / A2 * pA2_psigma) + kappa * theta * rho * T * I * u / sigma2;
+    std::vector<std::complex<double>> h(5);
+    h[0] = - A/v0,
+    h[1] = 2*kappa/sigma2*D - kappa * rho * T * I * uMinusHalfI / sigma,
+    h[2] = - pA_pRho + 2 * kappa * theta / (sigma2 * d) * (pd_pRho - d / A2 * pA2_pRho) - kappa * theta * T * I * uMinusHalfI / sigma,
+    h[3] = 1.0 / (sigma * I * uMinusHalfI) * pA_pRho + 2 * theta / sigma2 * D + 2 * kappa * theta / (sigma2 * B) * pB_pKappa
+           - theta * rho * T * I * uMinusHalfI / sigma,
+    h[4] = - pA_pSigma - 4 * kappa * theta / pow(sigma, 3) * D + 2 * kappa * theta / (sigma2 * d)
+                                                                 * (pd_pSigma - d / A2 * pA2_pSigma) + kappa * theta * rho * T * I * uMinusHalfI / sigma2;
+    double pow_u = real(pow(u,2.0)) + 0.25;
+    const auto phi = CharFunc(uMinusHalfI);
+    std::vector<std::complex<double>> jacobian(nParameters, 0.0);
+    for (int i = 0; i < 5; ++i)
+    {
+        jacobian[i] = h[i] * phi;
+    }
+    if (nParameters > 5)
+        for (int i = 0; i < indexT; ++i)
+            jacobian[5 + i] = - pow_u * deltaTimes[i] * phi;
 
-    const auto phi = CharFunc(u);
-    std::vector<std::complex<double>> jacobian {phi*h1,phi*h2,phi*h3,phi*h4,phi*h5};
     return jacobian;
+}
+
+double SPXOption::IntegralPhi() const {
+    double integralPhi = 0.0;
+    for (int i = 0; i < indexT; ++i)
+    {
+        integralPhi += deltaTimes[i] * phiT[i];
+    }
+    return integralPhi;
 }
 
 

@@ -224,7 +224,7 @@ void printVIXgradient(modelPara p, double tbar, double r, int n, VD tau, VD K);
 const double St = 100.0;
 const double S0 = 100.0;
 
-int main(int argc, char* argv[]) {
+int main() {
     double S = St/S0; //This is S(t)/S_0
     double r = 0.02;
     double tbar = 30 / 365.0;
@@ -320,10 +320,8 @@ int main(int argc, char* argv[]) {
     std::default_random_engine generator;
     std::uniform_real_distribution<double> distri(0.0, 1.0);
 
-    assert(argc > 2);
-
-    double muFactor = std::stod(argv[1]);
-    int nTestMax = std::stoi(argv[2]);
+    double muFactor = 1;
+    int nTestMax = 1;
 
     for(int nTest = 0; nTest < nTestMax; nTest++){
         double k = distri(generator) * 4.5 + 0.5;

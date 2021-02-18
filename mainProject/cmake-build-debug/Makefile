@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/code/Thesis/mainProject
+CMAKE_SOURCE_DIR = /mnt/c/code/Thesis/displacement
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/code/Thesis/mainProject/cmake-build-debug
+CMAKE_BINARY_DIR = /mnt/c/code/Thesis/displacement/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -258,6 +258,33 @@ VIXOption.cpp.s:
 	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.s
 .PHONY : VIXOption.cpp.s
 
+doublecomparison.o: doublecomparison.cpp.o
+
+.PHONY : doublecomparison.o
+
+# target to build an object file
+doublecomparison.cpp.o:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.o
+.PHONY : doublecomparison.cpp.o
+
+doublecomparison.i: doublecomparison.cpp.i
+
+.PHONY : doublecomparison.i
+
+# target to preprocess a source file
+doublecomparison.cpp.i:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.i
+.PHONY : doublecomparison.cpp.i
+
+doublecomparison.s: doublecomparison.cpp.s
+
+.PHONY : doublecomparison.s
+
+# target to generate assembly for a file
+doublecomparison.cpp.s:
+	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.s
+.PHONY : doublecomparison.cpp.s
+
 main.o: main.cpp.o
 
 .PHONY : main.o
@@ -309,6 +336,9 @@ help:
 	@echo "... VIXOption.o"
 	@echo "... VIXOption.i"
 	@echo "... VIXOption.s"
+	@echo "... doublecomparison.o"
+	@echo "... doublecomparison.i"
+	@echo "... doublecomparison.s"
 	@echo "... main.o"
 	@echo "... main.i"
 	@echo "... main.s"
