@@ -99,6 +99,8 @@ int main()
         for (int i = 5; i < EuropeanOption::nParameters; ++i)
             initialGuess[i] = 2e-2;
 
+        
+
     calibrate(calibration, initialGuess);
 //    calibrate(calibration, initialGuess, true);
 //    calibrate(calibration, initialGuess, false,"Numerical");
@@ -107,6 +109,6 @@ int main()
                                VIX_maturities, marketParameters, r, S0);
 
     calibrate(noDisplacement, initialGuess);
-    testModel(calibration, 10);
+    // testModel(calibration, 10);
     return 0;
 }
