@@ -99,16 +99,26 @@ int main()
         for (int i = 5; i < EuropeanOption::nParameters; ++i)
             initialGuess[i] = 2e-2;
 
-        
+
+
+//    double obFun[calibration.size()], jacFun[calibration.size() * EuropeanOption::nParameters];
+//    calibration.setMarketPrices();
+//    double checker[calibration.size()];
+//    std::fill_n(checker, calibration.size(), -1);
+//    dlevmar_chkjac(objectiveFunction, gradientObjective, initialGuess, EuropeanOption::nParameters,
+//                   calibration.size(), (void *) &calibration, checker);
+//    objectiveFunction(initialGuess, obFun, 1,1, (void *) &calibration);
+//    gradientObjective(initialGuess, jacFun, 1, 1, (void *) &calibration);
 
     calibrate(calibration, initialGuess);
 //    calibrate(calibration, initialGuess, true);
 //    calibrate(calibration, initialGuess, false,"Numerical");
 
-    Calibration noDisplacement(SPX_strikes, SPX_maturities, VIX_strikes,
-                               VIX_maturities, marketParameters, r, S0);
+//    Calibration noDisplacement(SPX_strikes, SPX_maturities, VIX_strikes,
+//                               VIX_maturities, marketParameters, r, S0);
 
-    calibrate(noDisplacement, initialGuess);
-    // testModel(calibration, 10);
+//    calibrate(noDisplacement, initialGuess);
+    testModel(calibration, 10);
+//    testModel(noDisplacement, 10, "Numerical");
     return 0;
 }
