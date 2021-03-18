@@ -12,7 +12,7 @@ class SPXOption: public EuropeanOption {
 
 public:
     // Constructor:
-    SPXOption(double K, double T, std::string  optType = "C",
+    SPXOption(double K, double T, double r, std::string  optType = "C",
               std::string cfType = "Cui",double N = 200);
 
     double Price() const override;

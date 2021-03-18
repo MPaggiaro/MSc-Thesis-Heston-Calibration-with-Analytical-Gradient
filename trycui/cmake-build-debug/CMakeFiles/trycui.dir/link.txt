@@ -1,1 +1,1 @@
-/usr/bin/c++  -g   CMakeFiles/trycui.dir/main.cpp.o  -o trycui 
+/usr/bin/c++  -g   CMakeFiles/trycui.dir/main.cpp.o  -o trycui  -llevmar -llapack -lblas -lm 

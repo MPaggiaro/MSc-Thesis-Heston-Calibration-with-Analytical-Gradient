@@ -6,7 +6,23 @@
 
 #IncludeRegexTransform: 
 
-/mnt/c/code/Thesis/displacement/Calibration.h
+/mnt/c/code/Thesis/mainProject/Calibration.cpp
+iostream
+-
+iomanip
+-
+algorithm
+-
+random
+-
+iterator
+-
+Calibration.h
+/mnt/c/code/Thesis/mainProject/Calibration.h
+doublecomparison.h
+/mnt/c/code/Thesis/mainProject/doublecomparison.h
+
+/mnt/c/code/Thesis/mainProject/Calibration.h
 utility
 -
 vector
@@ -16,13 +32,21 @@ memory
 levmar/levmar.h
 -
 EuropeanOption.h
-/mnt/c/code/Thesis/displacement/EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 SPXOption.h
-/mnt/c/code/Thesis/displacement/SPXOption.h
+/mnt/c/code/Thesis/mainProject/SPXOption.h
 VIXOption.h
-/mnt/c/code/Thesis/displacement/VIXOption.h
+/mnt/c/code/Thesis/mainProject/VIXOption.h
 
-/mnt/c/code/Thesis/displacement/EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.cpp
+EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
+limits
+-
+algorithm
+-
+
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 string
 -
 utility
@@ -32,25 +56,45 @@ vector
 complex
 -
 
-/mnt/c/code/Thesis/displacement/SPXOption.h
+/mnt/c/code/Thesis/mainProject/Faddeeva.hh
+complex
+-
+
+/mnt/c/code/Thesis/mainProject/SPXOption.cpp
+SPXOption.h
+/mnt/c/code/Thesis/mainProject/SPXOption.h
+boost/math/quadrature/gauss.hpp
+-
+
+/mnt/c/code/Thesis/mainProject/SPXOption.h
 utility
 -
 EuropeanOption.h
-/mnt/c/code/Thesis/displacement/EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 
-/mnt/c/code/Thesis/displacement/VIXOption.h
+/mnt/c/code/Thesis/mainProject/VIXOption.cpp
+VIXOption.h
+/mnt/c/code/Thesis/mainProject/VIXOption.h
+Faddeeva.hh
+/mnt/c/code/Thesis/mainProject/Faddeeva.hh
+boost/math/quadrature/gauss.hpp
+-
+
+/mnt/c/code/Thesis/mainProject/VIXOption.h
 utility
 -
 EuropeanOption.h
-/mnt/c/code/Thesis/displacement/EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 
-/mnt/c/code/Thesis/displacement/main.cpp
+/mnt/c/code/Thesis/mainProject/doublecomparison.h
+
+/mnt/c/code/Thesis/mainProject/validation.cpp
 iostream
 -
 vector
 -
 EuropeanOption.h
-/mnt/c/code/Thesis/displacement/EuropeanOption.h
+/mnt/c/code/Thesis/mainProject/EuropeanOption.h
 Calibration.h
-/mnt/c/code/Thesis/displacement/Calibration.h
+/mnt/c/code/Thesis/mainProject/Calibration.h
 

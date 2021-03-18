@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/lin.dir/CFG.cpp.o"
+  "CMakeFiles/lin.dir/DIS.cpp.o"
   "CMakeFiles/lin.dir/Faddeeva.cc.o"
   "lin"
   "lin.pdb"

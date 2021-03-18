@@ -16,12 +16,12 @@ private:
 
 public:
 // Public member data for convenience only
-    static double r, q, kappa, theta, sigma, rho, v0, S0, tau_bar;
+    static double q, kappa, theta, sigma, rho, v0, S0, tau_bar;
     static unsigned nParameters;
     double K = 0; // Strike price
     double T = 0; // Expiry date
+    double r;
     std::string optType; // Option name (call, put)
-
     // additional parameter: displacement (phi_t)
     static std::vector<double> times, deltaTimes, phiT;
 
@@ -33,7 +33,7 @@ public:
     // index needed for computation of integralPhi:
     int indexT = 0;
     // Constructor:
-    EuropeanOption(double K, double T, std::string  optType = "C",
+    EuropeanOption(double K, double T, double r, std::string  optType = "C",
                    std::string cfType = "Cui", double N = 200);
 
 // Destructor

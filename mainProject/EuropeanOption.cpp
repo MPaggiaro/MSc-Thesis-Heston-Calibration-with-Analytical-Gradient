@@ -7,7 +7,7 @@
 #include <algorithm>
 
 // definition of static members:
-double EuropeanOption::r, EuropeanOption::q, EuropeanOption::kappa,
+double EuropeanOption::q, EuropeanOption::kappa,
     EuropeanOption::theta, EuropeanOption::sigma, EuropeanOption::rho,
     EuropeanOption::v0, EuropeanOption::S0, EuropeanOption::tau_bar = 0.08219178;
 unsigned EuropeanOption::nParameters;
@@ -15,9 +15,9 @@ std::vector<double> EuropeanOption::times, EuropeanOption::deltaTimes,
     EuropeanOption::phiT;
 // std::vector<double> EuropeanOption::xGauss, EuropeanOption::wGauss;
 
-EuropeanOption::EuropeanOption (const double K, const double T, std::string  optType,
+EuropeanOption::EuropeanOption (const double K, const double T, const double r, std::string  optType,
                                 std::string cfType,const double N):
-        K(K),T(T),optType(std::move(optType)),N(N),cfType(std::move(cfType)) { }
+        K(K),T(T),r(r), optType(std::move(optType)),N(N),cfType(std::move(cfType)) { }
 
 
 void EuropeanOption::copy(const EuropeanOption& o2)

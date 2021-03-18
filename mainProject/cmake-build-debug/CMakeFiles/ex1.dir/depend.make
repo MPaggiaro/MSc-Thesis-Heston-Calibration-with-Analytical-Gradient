@@ -26,9 +26,9 @@ CMakeFiles/ex1.dir/VIXOption.cpp.o: ../VIXOption.h
 CMakeFiles/ex1.dir/doublecomparison.cpp.o: ../doublecomparison.cpp
 CMakeFiles/ex1.dir/doublecomparison.cpp.o: ../doublecomparison.h
 
-CMakeFiles/ex1.dir/main.cpp.o: ../Calibration.h
-CMakeFiles/ex1.dir/main.cpp.o: ../EuropeanOption.h
-CMakeFiles/ex1.dir/main.cpp.o: ../SPXOption.h
-CMakeFiles/ex1.dir/main.cpp.o: ../VIXOption.h
-CMakeFiles/ex1.dir/main.cpp.o: ../main.cpp
+CMakeFiles/ex1.dir/validation.cpp.o: ../Calibration.h
+CMakeFiles/ex1.dir/validation.cpp.o: ../EuropeanOption.h
+CMakeFiles/ex1.dir/validation.cpp.o: ../SPXOption.h
+CMakeFiles/ex1.dir/validation.cpp.o: ../VIXOption.h
+CMakeFiles/ex1.dir/validation.cpp.o: ../validation.cpp
 

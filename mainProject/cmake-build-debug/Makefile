@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /mnt/c/code/Thesis/displacement
+CMAKE_SOURCE_DIR = /mnt/c/code/Thesis/mainProject
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /mnt/c/code/Thesis/displacement/cmake-build-debug
+CMAKE_BINARY_DIR = /mnt/c/code/Thesis/mainProject/cmake-build-debug
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -80,9 +80,9 @@ edit_cache/fast: edit_cache
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/displacement/cmake-build-debug/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /mnt/c/code/Thesis/mainProject/cmake-build-debug/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -111,17 +111,17 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named ex1
+# Target rules for targets named validation
 
 # Build rule for target.
-ex1: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 ex1
-.PHONY : ex1
+validation: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 validation
+.PHONY : validation
 
 # fast build rule for target.
-ex1/fast:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/build
-.PHONY : ex1/fast
+validation/fast:
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/build
+.PHONY : validation/fast
 
 Calibration.o: Calibration.cpp.o
 
@@ -129,7 +129,7 @@ Calibration.o: Calibration.cpp.o
 
 # target to build an object file
 Calibration.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Calibration.cpp.o
 .PHONY : Calibration.cpp.o
 
 Calibration.i: Calibration.cpp.i
@@ -138,7 +138,7 @@ Calibration.i: Calibration.cpp.i
 
 # target to preprocess a source file
 Calibration.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Calibration.cpp.i
 .PHONY : Calibration.cpp.i
 
 Calibration.s: Calibration.cpp.s
@@ -147,7 +147,7 @@ Calibration.s: Calibration.cpp.s
 
 # target to generate assembly for a file
 Calibration.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Calibration.cpp.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Calibration.cpp.s
 .PHONY : Calibration.cpp.s
 
 EuropeanOption.o: EuropeanOption.cpp.o
@@ -156,7 +156,7 @@ EuropeanOption.o: EuropeanOption.cpp.o
 
 # target to build an object file
 EuropeanOption.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/EuropeanOption.cpp.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/EuropeanOption.cpp.o
 .PHONY : EuropeanOption.cpp.o
 
 EuropeanOption.i: EuropeanOption.cpp.i
@@ -165,7 +165,7 @@ EuropeanOption.i: EuropeanOption.cpp.i
 
 # target to preprocess a source file
 EuropeanOption.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/EuropeanOption.cpp.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/EuropeanOption.cpp.i
 .PHONY : EuropeanOption.cpp.i
 
 EuropeanOption.s: EuropeanOption.cpp.s
@@ -174,7 +174,7 @@ EuropeanOption.s: EuropeanOption.cpp.s
 
 # target to generate assembly for a file
 EuropeanOption.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/EuropeanOption.cpp.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/EuropeanOption.cpp.s
 .PHONY : EuropeanOption.cpp.s
 
 Faddeeva.o: Faddeeva.cc.o
@@ -183,7 +183,7 @@ Faddeeva.o: Faddeeva.cc.o
 
 # target to build an object file
 Faddeeva.cc.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Faddeeva.cc.o
 .PHONY : Faddeeva.cc.o
 
 Faddeeva.i: Faddeeva.cc.i
@@ -192,7 +192,7 @@ Faddeeva.i: Faddeeva.cc.i
 
 # target to preprocess a source file
 Faddeeva.cc.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Faddeeva.cc.i
 .PHONY : Faddeeva.cc.i
 
 Faddeeva.s: Faddeeva.cc.s
@@ -201,7 +201,7 @@ Faddeeva.s: Faddeeva.cc.s
 
 # target to generate assembly for a file
 Faddeeva.cc.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/Faddeeva.cc.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/Faddeeva.cc.s
 .PHONY : Faddeeva.cc.s
 
 SPXOption.o: SPXOption.cpp.o
@@ -210,7 +210,7 @@ SPXOption.o: SPXOption.cpp.o
 
 # target to build an object file
 SPXOption.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/SPXOption.cpp.o
 .PHONY : SPXOption.cpp.o
 
 SPXOption.i: SPXOption.cpp.i
@@ -219,7 +219,7 @@ SPXOption.i: SPXOption.cpp.i
 
 # target to preprocess a source file
 SPXOption.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/SPXOption.cpp.i
 .PHONY : SPXOption.cpp.i
 
 SPXOption.s: SPXOption.cpp.s
@@ -228,7 +228,7 @@ SPXOption.s: SPXOption.cpp.s
 
 # target to generate assembly for a file
 SPXOption.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/SPXOption.cpp.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/SPXOption.cpp.s
 .PHONY : SPXOption.cpp.s
 
 VIXOption.o: VIXOption.cpp.o
@@ -237,7 +237,7 @@ VIXOption.o: VIXOption.cpp.o
 
 # target to build an object file
 VIXOption.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/VIXOption.cpp.o
 .PHONY : VIXOption.cpp.o
 
 VIXOption.i: VIXOption.cpp.i
@@ -246,7 +246,7 @@ VIXOption.i: VIXOption.cpp.i
 
 # target to preprocess a source file
 VIXOption.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/VIXOption.cpp.i
 .PHONY : VIXOption.cpp.i
 
 VIXOption.s: VIXOption.cpp.s
@@ -255,7 +255,7 @@ VIXOption.s: VIXOption.cpp.s
 
 # target to generate assembly for a file
 VIXOption.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/VIXOption.cpp.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/VIXOption.cpp.s
 .PHONY : VIXOption.cpp.s
 
 doublecomparison.o: doublecomparison.cpp.o
@@ -264,7 +264,7 @@ doublecomparison.o: doublecomparison.cpp.o
 
 # target to build an object file
 doublecomparison.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.o
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/doublecomparison.cpp.o
 .PHONY : doublecomparison.cpp.o
 
 doublecomparison.i: doublecomparison.cpp.i
@@ -273,7 +273,7 @@ doublecomparison.i: doublecomparison.cpp.i
 
 # target to preprocess a source file
 doublecomparison.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.i
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/doublecomparison.cpp.i
 .PHONY : doublecomparison.cpp.i
 
 doublecomparison.s: doublecomparison.cpp.s
@@ -282,35 +282,35 @@ doublecomparison.s: doublecomparison.cpp.s
 
 # target to generate assembly for a file
 doublecomparison.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/doublecomparison.cpp.s
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/doublecomparison.cpp.s
 .PHONY : doublecomparison.cpp.s
 
-main.o: main.cpp.o
+validation.o: validation.cpp.o
 
-.PHONY : main.o
+.PHONY : validation.o
 
 # target to build an object file
-main.cpp.o:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/main.cpp.o
-.PHONY : main.cpp.o
+validation.cpp.o:
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/validation.cpp.o
+.PHONY : validation.cpp.o
 
-main.i: main.cpp.i
+validation.i: validation.cpp.i
 
-.PHONY : main.i
+.PHONY : validation.i
 
 # target to preprocess a source file
-main.cpp.i:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/main.cpp.i
-.PHONY : main.cpp.i
+validation.cpp.i:
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/validation.cpp.i
+.PHONY : validation.cpp.i
 
-main.s: main.cpp.s
+validation.s: validation.cpp.s
 
-.PHONY : main.s
+.PHONY : validation.s
 
 # target to generate assembly for a file
-main.cpp.s:
-	$(MAKE) -f CMakeFiles/ex1.dir/build.make CMakeFiles/ex1.dir/main.cpp.s
-.PHONY : main.cpp.s
+validation.cpp.s:
+	$(MAKE) -f CMakeFiles/validation.dir/build.make CMakeFiles/validation.dir/validation.cpp.s
+.PHONY : validation.cpp.s
 
 # Help Target
 help:
@@ -320,7 +320,7 @@ help:
 	@echo "... depend"
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
-	@echo "... ex1"
+	@echo "... validation"
 	@echo "... Calibration.o"
 	@echo "... Calibration.i"
 	@echo "... Calibration.s"
@@ -339,9 +339,9 @@ help:
 	@echo "... doublecomparison.o"
 	@echo "... doublecomparison.i"
 	@echo "... doublecomparison.s"
-	@echo "... main.o"
-	@echo "... main.i"
-	@echo "... main.s"
+	@echo "... validation.o"
+	@echo "... validation.i"
+	@echo "... validation.s"
 .PHONY : help
 
 

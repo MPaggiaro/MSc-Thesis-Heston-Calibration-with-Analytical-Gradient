@@ -257,6 +257,8 @@ int main() {
         p[fill+5] = disInitial[fill] * 0.0001;
     }
 
+
+
     double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
     opts[0] = LM_INIT_MU * 100;
     // stopping thresholds for
@@ -282,6 +284,13 @@ int main() {
     << "\t"<< p[9] << "\t" << p[10]<< "\t" << p[11]<< "\t"<< p[12]<< "\t"<< p[13]
     << "\t"<< p[14] << "\t" << p[15]<< "\t" << p[16]<< "\t"<< p[17]<< "\t"<< p[18]
     << std::endl;
+
+    double err[optPrices.size()];
+    dlevmar_chkjac(objFunc, JacFunc, p, 5 + 14, optPrices.size(), (void *)&marP, err);
+    for (int cer = 0; cer < 30; cer++){
+        std::cerr << err[cer] << ",";
+    }
+    std::cerr << std::endl;
 
     double start_s = clock();
     dlevmar_der(objFunc, JacFunc, p, NULL, 19, (int)optPrices.size(), 30000,

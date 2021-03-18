@@ -600,6 +600,14 @@ int main() {
         market.T[j] = tarr[j];
     }
 
+// algorithm parameters
+    double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
+    opts[0]=LM_INIT_MU;
+    // stopping thresholds for
+    opts[1]=1E-10;       // ||J^T e||_inf
+    opts[2]=1E-10;       // ||Dp||_2
+    opts[3]=1E-10;       // ||e||_2
+    opts[4]= LM_DIFF_DELTA; // finite difference if used
 
 
     // spot and interest rate
@@ -626,9 +634,64 @@ int main() {
     double jac[m*n];
     double start_s = clock();
     JacHes(pstar, jac, m, n, (void *) &market);
+
+
+    // double obFun[calibration.size()], jacFun[calibration.size() * EuropeanOption::nParameters];
+
+    // you may set up your initial point here:
+    double p[5];
+    p[0] = 1.2000;
+    p[1] = 0.20000;
+    p[2] = 0.3000;
+    p[3] = -0.6000;
+    p[4] = 0.2000;
+
+    // debug: check if gradient is correct:
+    double error[n];
+    std::fill_n(error, n, -1);
+    dlevmar_chkjac(fHes, JacHes, p, m, n,(void *) &market, error);
+
+    cout << "\r-------- -------- -------- Heston Model Calibrator -------- -------- --------"<<endl;
+    cout << "Parameters:" << "\t         kappa"<<"\t     vinf"<< "\t       vov"<< "\t      rho" << "\t     v0"<<endl;
+    cout << "\r Initial point:" << "\t"  << scientific << setprecision(8) << p[0]<< "\t" << p[1]<< "\t"<< p[2]<< "\t"<< p[3]<< "\t"<< p[4] << endl;
+    // Calibrate using analytical gradient
+    dlevmar_der(fHes, JacHes, p, x, m, n, 100, opts, info, NULL, NULL, (void *) &market);
+
     double stop_s = clock();
 
-    std::cout << "Elapsed time: " << double(stop_s - start_s)/CLOCKS_PER_SEC << " seconds" << std::endl;
+    cout << "Optimum found:" << scientific << setprecision(8) << "\t"<< p[0]<< "\t" << p[1]<< "\t"<< p[2]<< "\t"<< p[3]<< "\t"<< p[4] << endl;
+    cout << "Real optimum:" << "\t" << pstar[0]<<"\t"<< pstar[1]<< "\t"<< pstar[2]<< "\t"<< pstar[3]<< "\t"<< pstar[4] << endl;
+
+    if (int(info[6]) == 6) {
+        cout << "\r Solved: stopped by small ||e||_2 = "<< info[1] << " < " << opts[3]<< endl;
+    } else if (int(info[6]) == 1) {
+        cout << "\r Solved: stopped by small gradient J^T e = " << info[2] << " < " << opts[1]<< endl;
+    } else if (int(info[6]) == 2) {
+        cout << "\r Solved: stopped by small change Dp = " << info[3] << " < " << opts[2]<< endl;
+    } else if (int(info[6]) == 3) {
+        cout << "\r Unsolved: stopped by itmax " << endl;
+    } else if (int(info[6]) == 4) {
+        cout << "\r Unsolved: singular matrix. Restart from current p with increased mu"<< endl;
+    } else if (int(info[6]) == 5) {
+        cout << "\r Unsolved: no further error reduction is possible. Restart with increased mu"<< endl;
+    } else if (int(info[6]) == 7) {
+        cout << "\r Unsolved: stopped by invalid values, user error"<< endl;
+    }
+
+    cout << "\r-------- -------- -------- Computational cost -------- -------- --------"<<endl;
+    cout << "\r          Time cost: "<< double(stop_s - start_s) /CLOCKS_PER_SEC << " seconds "<<endl;
+    cout << "         Iterations: " << int(info[5]) << endl;
+    cout << "         pv  Evalue: " << int(info[7]) << endl;
+    cout << "         Jac Evalue: "<< int(info[8]) << endl;
+    cout << "# of lin sys solved: " << int(info[9])<< endl; //The attempts to reduce error
+    cout << "\r-------- -------- -------- Residuals -------- -------- --------"<<endl;
+    cout << "\r          ||e0||_2: " << info[0] << endl;
+    cout << "          ||e*||_2: " << info[1]<<endl;
+    cout << "       ||J'e||_inf: " << info[2]<<endl;
+    cout << "          ||Dp||_2: " << info[3]<<endl;
+
+
 
     return 0;
+
 } // The End

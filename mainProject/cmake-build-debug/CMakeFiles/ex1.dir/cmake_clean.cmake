@@ -5,7 +5,8 @@ file(REMOVE_RECURSE
   "CMakeFiles/ex1.dir/SPXOption.cpp.o"
   "CMakeFiles/ex1.dir/VIXOption.cpp.o"
   "CMakeFiles/ex1.dir/doublecomparison.cpp.o"
-  "CMakeFiles/ex1.dir/main.cpp.o"
+  "CMakeFiles/ex1.dir/main_mktCalib.cpp.o"
+  "CMakeFiles/ex1.dir/validation.cpp.o"
   "ex1"
   "ex1.pdb"
 )

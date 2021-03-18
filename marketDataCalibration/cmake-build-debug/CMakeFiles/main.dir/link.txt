@@ -1,0 +1,1 @@
+/usr/bin/c++  -g   CMakeFiles/main.dir/main.cpp.o CMakeFiles/main.dir/EuropeanOption.cpp.o CMakeFiles/main.dir/Calibration.cpp.o CMakeFiles/main.dir/SPXOption.cpp.o CMakeFiles/main.dir/VIXOption.cpp.o CMakeFiles/main.dir/Faddeeva.cc.o CMakeFiles/main.dir/utility.cpp.o  -o main  -llevmar -llapack -lblas -lm 

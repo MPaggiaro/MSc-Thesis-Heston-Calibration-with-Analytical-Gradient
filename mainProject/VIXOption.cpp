@@ -9,9 +9,9 @@
 #define wGauss boost::math::quadrature::gauss<double,64>::weights()
 #define I std::complex<double>(0.0,1.0)
 
-VIXOption::VIXOption(const double K, const double T, std::string  optType,
+VIXOption::VIXOption(const double K, const double T, const double r, std::string  optType,
                      std::string cfType,const double N):
-        EuropeanOption(K,T,std::move(optType),std::move(cfType),N) { }
+        EuropeanOption(K,T,r,std::move(optType),std::move(cfType),N) { }
 
 double VIXOption::Price() const
 {

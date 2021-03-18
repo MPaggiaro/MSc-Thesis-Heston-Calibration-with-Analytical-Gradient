@@ -123,32 +123,32 @@ lin/fast:
 	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/build
 .PHONY : lin/fast
 
-CFG.o: CFG.cpp.o
+DIS.o: DIS.cpp.o
 
-.PHONY : CFG.o
+.PHONY : DIS.o
 
 # target to build an object file
-CFG.cpp.o:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/CFG.cpp.o
-.PHONY : CFG.cpp.o
+DIS.cpp.o:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.o
+.PHONY : DIS.cpp.o
 
-CFG.i: CFG.cpp.i
+DIS.i: DIS.cpp.i
 
-.PHONY : CFG.i
+.PHONY : DIS.i
 
 # target to preprocess a source file
-CFG.cpp.i:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/CFG.cpp.i
-.PHONY : CFG.cpp.i
+DIS.cpp.i:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.i
+.PHONY : DIS.cpp.i
 
-CFG.s: CFG.cpp.s
+DIS.s: DIS.cpp.s
 
-.PHONY : CFG.s
+.PHONY : DIS.s
 
 # target to generate assembly for a file
-CFG.cpp.s:
-	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/CFG.cpp.s
-.PHONY : CFG.cpp.s
+DIS.cpp.s:
+	$(MAKE) -f CMakeFiles/lin.dir/build.make CMakeFiles/lin.dir/DIS.cpp.s
+.PHONY : DIS.cpp.s
 
 Faddeeva.o: Faddeeva.cc.o
 
@@ -186,9 +186,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... lin"
-	@echo "... CFG.o"
-	@echo "... CFG.i"
-	@echo "... CFG.s"
+	@echo "... DIS.o"
+	@echo "... DIS.i"
+	@echo "... DIS.s"
 	@echo "... Faddeeva.o"
 	@echo "... Faddeeva.i"
 	@echo "... Faddeeva.s"

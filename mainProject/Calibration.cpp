@@ -25,7 +25,6 @@ Calibration::Calibration(const std::vector<double> &strikes,
     opts[4] = LM_DIFF_DELTA; // finite difference if used
 
     // First, we set the parameters of the market:
-    EuropeanOption::r = r;
     EuropeanOption::S0 = S0;
     EuropeanOption::q = q;
     EuropeanOption::nParameters = nParameters;
@@ -33,7 +32,7 @@ Calibration::Calibration(const std::vector<double> &strikes,
     // Then, we save the information of the options:
     SPX_options.reserve(strikes.size());
     for (unsigned i = 0; i < strikes.size(); ++i)
-        SPX_options.emplace_back(strikes[i], maturities[i]);
+        SPX_options.emplace_back(strikes[i], maturities[i],r);
 }
 
 Calibration::Calibration(const std::vector<double> &SPX_strikes, const std::vector<double> &SPX_maturities,
@@ -44,7 +43,7 @@ Calibration::Calibration(const std::vector<double> &SPX_strikes, const std::vect
 {
     VIX_options.reserve(VIX_strikes.size());
     for (unsigned i = 0; i < VIX_strikes.size(); ++i)
-        VIX_options.emplace_back(VIX_strikes[i], VIX_maturities[i]);
+        VIX_options.emplace_back(VIX_strikes[i], VIX_maturities[i],r);
 
     if (displacementFlag)
     {
@@ -293,7 +292,31 @@ std::vector<double> Calibration::IntegralDisplacement()
     return intPhi;
 }
 
-void computePrices(double *parameters, double *prices, int m, int n, void *data)
+void Calibration::setMarketPrices()
+{
+    marketPrices = Prices();
+}
+
+void computePrices(double *parameters, double *prices, int m, int n, void *data) {
+    // unused variables (however needed for levmar):
+    (void) m;
+    (void) n;
+
+    auto *calibration = static_cast<Calibration *> (data);
+    // update market parameters:
+    Calibration::setParameters(parameters);
+    // compute prices:
+    auto modelPrices = calibration->Prices();
+    // save them in the array:
+    for (int i = 0; i < modelPrices.size(); ++i)
+    {
+        prices[i] = modelPrices[i];
+    }
+
+
+}
+
+void objectiveFunction(double *parameters, double *objectiveFunction, int m, int n, void *data)
 {
     // unused variables (however needed for levmar):
     (void) m;
@@ -303,11 +326,20 @@ void computePrices(double *parameters, double *prices, int m, int n, void *data)
     // update market parameters:
     Calibration::setParameters(parameters);
     // compute prices:
-    auto pricesVector = calibration->Prices();
+    auto modelPrices = calibration->Prices();
     // save them in the array:
-    for (int i = 0; i < pricesVector.size(); ++i)
+    // Let's try a new implementation:
+    auto nSPX = calibration->SPX_options.size(),
+            nVIX = calibration->VIX_options.size();
+    int nOptions;
+    for (int i = 0; i < modelPrices.size(); ++i)
     {
-        prices[i] = pricesVector[i];
+        if (i < nSPX * EuropeanOption::nParameters)
+            nOptions = nSPX;
+        else
+            nOptions = nVIX;
+        objectiveFunction[i] = (modelPrices[i] - calibration->marketPrices[i]) /
+                    (sqrt(2 * nOptions) * calibration->marketPrices[i]);
     }
 }
 
@@ -332,11 +364,34 @@ void computeGradients(double *parameters, double *gradient, int m, int n, void *
     // update market parameters:
     Calibration::setParameters(parameters);
     // compute gradients:
-    auto gradientsVector = calibration->Gradients();
+    auto modelGradient = calibration->Gradients();
     // place them inside the array:
-    for (int i = 0; i < gradientsVector.size(); ++i)
-    {
-        gradient[i] = gradientsVector[i];
+    for (int i = 0; i < modelGradient.size(); ++i)
+        gradient[i] = modelGradient[i];
+}
+
+void gradientObjective(double *parameters, double *gradient, int m, int n, void *data)
+{
+    // unused variables (however needed for Levmar):
+    (void) m;
+    (void) n;
+
+    auto *calibration = static_cast<Calibration *> (data);
+    // update market parameters:
+    Calibration::setParameters(parameters);
+    // compute gradients:
+    auto modelGradient = calibration->Gradients();
+    // place them inside the array:
+    auto nSPX = calibration->SPX_options.size(),
+            nVIX = calibration->VIX_options.size();
+    for (int i = 0; i < modelGradient.size(); ++i) {
+        int nOptions;
+        if (i < nSPX * EuropeanOption::nParameters)
+            nOptions = nSPX;
+        else
+            nOptions = nVIX;
+        gradient[i] = modelGradient[i] / (sqrt(2 * nOptions)
+                * calibration->marketPrices[i / EuropeanOption::nParameters]);
     }
 }
 
@@ -358,19 +413,14 @@ void calibrate(Calibration &calibration, const double *initialGuess, const bool 
     double marketPrices[calibration.size()];
     computePrices(marketParameters, marketPrices, (int) EuropeanOption::nParameters,
                   (int) calibration.size(), (void *) &calibration);
-
-    // debug: see if Jacobian is right:
-    double gradientError[calibration.size()];
-    std::fill_n(gradientError, calibration.size(), -1);
-    dlevmar_chkjac(computePrices, computeGradients, marketParameters,
-                   (int) EuropeanOption::nParameters, (int) calibration.size(),
-                   (void *) &calibration, gradientError);
+    // alternative way: let's change the objective function.
+    calibration.setMarketPrices();
 
     if (perturbation)
         perturbPrices(marketPrices, (int) calibration.size());
 
     // algorithm parameters:
-    int itMax = 150;
+    int itMax = 35;
     double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
     for (int i = 0; i < calibration.opts.size(); ++i)
     {
@@ -383,48 +433,39 @@ void calibrate(Calibration &calibration, const double *initialGuess, const bool 
     double p[EuropeanOption::nParameters];
     // Set initial guess:
     for (int i = 0; i < EuropeanOption::nParameters; ++i)
-    {
         p[i] = initialGuess[i];
-    }
+
+    // debug: check if gradient is correct:
+    double checker[calibration.size()];
+    std::fill_n(checker, calibration.size(), -1);
+    dlevmar_chkjac(computePrices, computeGradients, p, (int) EuropeanOption::nParameters,
+                   (int) calibration.size(), (void *) &calibration, checker);
+    // double obFun[calibration.size()], jacFun[calibration.size() * EuropeanOption::nParameters];
 
     // Perform calibration with Levenberg-Marquardt algorithm:
 
-    // Case without displacement:
-    if (EuropeanOption::nParameters <= 5)
+    // Constraints: non-negative displacement.
+    double upperBound[EuropeanOption::nParameters], lowerBound[EuropeanOption::nParameters];
+    // no upper bound:
+    std::fill_n(upperBound, EuropeanOption::nParameters, std::numeric_limits<double>::max());
+    // std::fill_n(lowerBound, EuropeanOption::nParameters, 0);
+    for (int i = 0; i < EuropeanOption::nParameters; ++i)
     {
-        if (gradientType == "Analytical")
-            dlevmar_der(computePrices, computeGradients, p, marketPrices, (int)EuropeanOption::nParameters,
-                        (int)calibration.size(), itMax, opts, info, nullptr, nullptr,
-                        (void *) &calibration);
-
-        else // numerical gradient:
-            dlevmar_dif(computePrices, p, marketPrices, (int)EuropeanOption::nParameters,
-                        (int)calibration.size(), itMax, opts, info, nullptr, nullptr,
-                        (void *) &calibration);
-
+        if (i < 5)
+            lowerBound[i] = - std::numeric_limits<double>::max();
+        else
+            lowerBound[i] = 0;
     }
-    else // displacement present
-    {
-        // Constraints: non-negative displacement.
-        double upperBound[EuropeanOption::nParameters], lowerBound[EuropeanOption::nParameters];
-        // no upper bound:
-        std::fill_n(upperBound, EuropeanOption::nParameters, std::numeric_limits<double>::max());
-        for (int i = 0; i < EuropeanOption::nParameters; ++i)
-        {
-            if (i < 5)
-                lowerBound[i] = - std::numeric_limits<double>::max();
-            else
-                lowerBound[i] = 0;
-        }
-        if (gradientType == "Analytical")
-            dlevmar_bc_der(computePrices, computeGradients, p, marketPrices, (int) EuropeanOption::nParameters, (int) calibration.size(),
-                           lowerBound, upperBound, nullptr, itMax, opts, info, nullptr, nullptr, (void *) &calibration);
+    // upper and lower bound for correlation:
+    lowerBound[2] = -1; upperBound[2] = 1;
 
-        else // numerical gradient:
-            dlevmar_bc_dif(computePrices, p, marketPrices, (int) EuropeanOption::nParameters, (int) calibration.size(),
-                           lowerBound, upperBound, nullptr, itMax, opts, info, nullptr, nullptr, (void *) &calibration);
+    if (gradientType == "Analytical")
+        dlevmar_bc_der(objectiveFunction, gradientObjective, p, nullptr, (int) EuropeanOption::nParameters, (int) calibration.size(),
+                       lowerBound, upperBound, nullptr, itMax, opts, info, nullptr, nullptr, (void *) &calibration);
 
-    }
+    else // numerical gradient:
+        dlevmar_bc_dif(objectiveFunction, p, nullptr, (int) EuropeanOption::nParameters, (int) calibration.size(),
+                       lowerBound, upperBound, nullptr, itMax, opts, info, nullptr, nullptr, (void *) &calibration);
 
     calibration.stopClock = clock();
     // reset market parameters back to start:
@@ -439,57 +480,30 @@ void calibrate(Calibration &calibration, const double *initialGuess, const bool 
 
 void testModel (Calibration &calibration, int nIterations, const std::string &gradientType)
 {
-    // Objects for generating random numbers:
-    std::default_random_engine generator;
-    std::uniform_real_distribution<double> uniform(0.0, 1.0);
     int countSuccessfulCalibrations = 0;
+
+    int countWrongMinimaFound = 0;
 
     double marketParameters[EuropeanOption::nParameters],
         initialGuess[EuropeanOption::nParameters];
     for (int i = 0; i < nIterations; ++i)
     {
-        // single parameter for phi:
-//        auto initialPhi = 2e-3 + 8e-3 * uniform(generator);
-//        auto marketPhi = 2e-3 + 8e-3 * uniform(generator);
-
         // Generate initial guess and market parameters
-        for (int j = 0; j < EuropeanOption::nParameters; ++j)
-        {
-            if (j <= 1 or j == 4)
-            {
-                marketParameters[j] = 0.05 + 0.9 * uniform(generator);
-                initialGuess[j] = 0.05 + 0.9 * uniform(generator);
-            }
-            else if (j == 2)
-            {
-                marketParameters[j] = -0.1 - 0.8 * uniform(generator);
-                initialGuess[j] = -0.1 - 0.8 * uniform(generator);
-            }
-            else if (j == 3)
-            {
-                marketParameters[j] = 0.5 + 4.5 * uniform(generator);
-                initialGuess[j] = 0.5 + 4.5 * uniform(generator);
-            }
-            else // displacement vector:
-            {
-//                marketParameters[j] = 0.05 + 0.1 * uniform(generator);
-//                initialGuess[j] = 0.05 + 0.1 * uniform(generator);
-                marketParameters[j] = 8e-4 * uniform(generator);
-                initialGuess[j] = 2e-2; //8e-4 * uniform(generator);
-            }
-        }
+        generateGuess(marketParameters, (int) EuropeanOption::nParameters);
+        generateGuess(initialGuess, (int) EuropeanOption::nParameters);
 
         std::cout << "Simulation " << i+1 << " of " << nIterations << "." << std::endl;
-        // Let's see if Feller condition is respected. That doesn't seem to be the case in the
-        // "critical" cases.
-//        bool fellerInitial
         // Calibrate
         calibration.setParameters(marketParameters);
         calibrate(calibration, initialGuess, false, gradientType);
-        // We are getting some calibrations that are not feasible. Let's see why.
-        if (calibration.info[6] == 7)
+
+        while (calibration.info[6] == 7 or calibration.info[6] == 3)
         {
-            std::cout << "Not working calibration found!" << std::endl;
+            countWrongMinimaFound ++;
+            // slow convergence: let's change initial guess.
+            std::cout << "Possible local minimum. Let's change initial point." << std::endl;
+            generateGuess(initialGuess, (int) EuropeanOption::nParameters);
+            calibrate(calibration, initialGuess, false, gradientType);
         }
 
         // See if the calibration was successful.
@@ -498,4 +512,26 @@ void testModel (Calibration &calibration, int nIterations, const std::string &gr
     }
     std::cout << countSuccessfulCalibrations << " successful calibrations out of "
               << nIterations << " simulations." << std::endl;
+
+    std::cout << "Initial point changed " << countWrongMinimaFound << " times." <<std::endl;
+}
+
+void generateGuess(double *parameters, int size)
+{
+    // Objects for generating random numbers:
+    std::random_device randomDevice;
+    std::default_random_engine generator{randomDevice()};
+    std::uniform_real_distribution<double> uniform(0.0, 1.0);
+    // Generate guess:
+    for (int j = 0; j < size; ++j)
+    {
+        if (j <= 1 or j == 4)
+            parameters[j] = 0.05 + 0.9 * uniform(generator);
+        else if (j == 2)
+            parameters[j] = -0.1 - 0.8 * uniform(generator);
+        else if (j == 3)
+            parameters[j] = 0.5 + 4.5 * uniform(generator);
+        else // displacement vector:
+            parameters[j] = 8e-4 * uniform(generator);
+    }
 }
