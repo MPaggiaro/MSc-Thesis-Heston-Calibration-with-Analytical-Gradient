@@ -88,144 +88,187 @@ int main()
     if (!displacement_vector.empty())
         for (int i = 0; i < displacement_vector.size(); ++i)
             initialGuess[i+5] = 2e-2;
+    calibration.setParameters(initialGuess);
+    auto initialPricesH = calibration.Prices();
+    calibration.setParameters(marketParameters);
 
-    calibrate(calibration, initialGuess);
+//    calibrate(calibration, initialGuess);
+//    testModel(calibration, 20);
+//
+//    std::ofstream out("modelValH.csv");
+//
+//    for (auto& row : calibration.infoValidation) {
+//        for (auto col : row)
+//            out << col <<',';
+//        out << '\n';
+//    }
 
-    std::vector<std::vector<double>> convergenceParameters;
-    // first parameter:
-    std::vector<double> parameters (initialGuess, initialGuess + 5);
-    // convergenceParameters.push_back(std::vector<double> (initialGuess, initialGuess + 5 + displacement_vector.size()));
-    // std::vector<double> convergenceF;
-    // save data for plots:
-    for (int i = 1; i < 50; ++i) {
-        calibrate(calibration, initialGuess, i);
-        if (i == 1)
-        {
-            // add info on objective function:
-            parameters.push_back(calibration.info[0]);
-            convergenceParameters.push_back(parameters);
-        }
-        if (calibration.info[6] == 6)
-            break;
-        parameters = calibration.searchParameters;
-        parameters.push_back(calibration.info[1]);
-        convergenceParameters.push_back(parameters);
-    }
-    convergenceParameters.push_back(std::vector<double> (marketParameters, marketParameters+5));
 
-    std::ofstream out("convergenceH.csv");
+//    auto finalPricesH = calibration.calibratedPrices;
+//    auto marketPricesH = calibration.marketPrices;
 
-    for (auto& row : convergenceParameters) {
-        for (auto col : row)
-            out << col <<',';
-        out << '\n';
-    }
+//    std::vector<std::vector<double>> convergenceParameters;
+//    // first parameter:
+//    std::vector<double> parameters (initialGuess, initialGuess + 5);
+//    // convergenceParameters.push_back(std::vector<double> (initialGuess, initialGuess + 5 + displacement_vector.size()));
+//    // std::vector<double> convergenceF;
+//    // save data for plots:
+//    for (int i = 1; i < 50; ++i) {
+//        calibrate(calibration, initialGuess, i);
+//        if (i == 1)
+//        {
+//            // add info on objective function:
+//            parameters.push_back(calibration.info[0]);
+//            convergenceParameters.push_back(parameters);
+//        }
+//        if (calibration.info[6] == 6)
+//            break;
+//        parameters = calibration.searchParameters;
+//        parameters.push_back(calibration.info[1]);
+//        convergenceParameters.push_back(parameters);
+//    }
+//    convergenceParameters.push_back(std::vector<double> (marketParameters, marketParameters+5));
+//
+
 
     Calibration calibrationDisp (SPX_strikes, SPX_maturities, VIX_strikes,
                              VIX_maturities, parametersWithDisplacement, 5 + displacement_vector.size(),
                              r, S0, true);
 
-    calibrate(calibrationDisp, initialGuess);
+//    calibrationDisp.setParameters(initialGuess);
+//    auto initialPricesHpp = calibrationDisp.Prices();
+//    calibrationDisp.setParameters(parametersWithDisplacement);
+//    calibrate(calibrationDisp, initialGuess);
+//    auto finalPricesHpp = calibrationDisp.calibratedPrices;
+//    auto marketPricesHpp = calibrationDisp.marketPrices;
 
-    std::vector<std::vector<double>> convergenceParametersDisp;
-    // first parameter:
-    parameters = std::vector<double>  (initialGuess, initialGuess + 5 + displacement_vector.size());
-    // convergenceParameters.push_back(std::vector<double> (initialGuess, initialGuess + 5 + displacement_vector.size()));
-    // std::vector<double> convergenceF;
-    // save data for plots:
-    for (int i = 1; i < 50; ++i) {
-        calibrate(calibrationDisp, initialGuess, i);
-        if (i == 1)
-        {
-            // add info on objective function:
-            parameters.push_back(calibrationDisp.info[0]);
-            convergenceParametersDisp.push_back(parameters);
-        }
-        if (calibrationDisp.info[6] == 6)
-            break;
-        parameters = calibrationDisp.searchParameters;
-        parameters.push_back(calibrationDisp.info[1]);
-        convergenceParametersDisp.push_back(parameters);
-    }
-    convergenceParametersDisp.push_back(std::vector<double> (parametersWithDisplacement,
-                                                             parametersWithDisplacement + 5 +
-                                                             displacement_vector.size()));
+//    std::vector<std::vector<double>> convergenceParametersDisp;
+//    // first parameter:
+//    parameters = std::vector<double>  (initialGuess, initialGuess + 5 + displacement_vector.size());
+//    // convergenceParameters.push_back(std::vector<double> (initialGuess, initialGuess + 5 + displacement_vector.size()));
+//    // std::vector<double> convergenceF;
+//    // save data for plots:
+//    for (int i = 1; i < 50; ++i) {
+//        calibrate(calibrationDisp, initialGuess, i);
+//        if (i == 1)
+//        {
+//            // add info on objective function:
+//            parameters.push_back(calibrationDisp.info[0]);
+//            convergenceParametersDisp.push_back(parameters);
+//        }
+//        if (calibrationDisp.info[6] == 6)
+//            break;
+//        parameters = calibrationDisp.searchParameters;
+//        parameters.push_back(calibrationDisp.info[1]);
+//        convergenceParametersDisp.push_back(parameters);
+//    }
+//    convergenceParametersDisp.push_back(std::vector<double> (parametersWithDisplacement,
+//                                                             parametersWithDisplacement + 5 +
+//                                                             displacement_vector.size()));
+//
+//    // add info about delta times:
+//    parameters = std::vector<double> (5, 0);
+//    parameters.insert(parameters.end(), calibrationDisp.deltaTimes.begin(),calibrationDisp.deltaTimes.end());
+//    convergenceParametersDisp.push_back(parameters);
 
-    // add info about delta times:
-    parameters = std::vector<double> (5, 0);
-    parameters.insert(parameters.end(), calibrationDisp.deltaTimes.begin(),calibrationDisp.deltaTimes.end());
-    convergenceParametersDisp.push_back(parameters);
-
-    std::ofstream outHpp("convergenceH++.csv");
-    for (auto& row : convergenceParametersDisp) {
-        for (auto col : row)
-            outHpp << col <<',';
-        outHpp << '\n';
-    }
+    // save calibration data:
+//    std::vector<std::vector<double>> calibInfo;
+//    auto strikes = SPX_strikes, maturities = SPX_maturities;
+//    strikes.insert(strikes.end(), VIX_strikes.begin(), VIX_strikes.end());
+//    maturities.insert(maturities.end(), VIX_maturities.begin(), VIX_maturities.end());
+//
+//    calibInfo.push_back(strikes);
+//    calibInfo.push_back(maturities);
+//    calibInfo.push_back(initialPricesH);
+//    calibInfo.push_back(finalPricesH);
+//    calibInfo.push_back(marketPricesH);
+//    calibInfo.push_back(initialPricesHpp);
+//    calibInfo.push_back(finalPricesHpp);
+//    calibInfo.push_back(marketPricesHpp);
+//
+//    std::ofstream outHpp("calibPrices.csv");
+//    for (auto& row : calibInfo) {
+//        for (auto col : row)
+//            outHpp << col <<',';
+//        outHpp << '\n';
+//    }
     // testModel(calibration, 10);
 //    testModel(noDisplacement, 10, "Numerical");
 
-//    std::vector<double>  // CMTDates = {0,0.083333333,0.166666667,0.25,0.5,1,2},
-//            // CMTRates = {0.01,	0.01, 0.02,	0.02,	0.06,	0.07,	0.15},
-//            SPXStrikesMkt, SPXExpiriesMkt, SPXPricesMkt, SPXRates,
-//            VIXStrikesMkt, VIXExpiriesMkt, VIXPricesMkt, VIXRates;
-//
-//    // get data from files:
-//    std::ifstream inputSPX ("SPXData.txt"),
-//        inputVIX("VIXData.txt"), inputSPXRates("ratesSPX.txt"), inputVIXRates("ratesVIX.txt");
-//
-//    std::string line;
-//    while (std::getline(inputSPX, line))
-//    {
-//        std::istringstream iss(line);
-//        double a, b, c;
-//        if (!(iss >> a >> b >> c)) { break; }
-////        std::vector<double> parts;
-////        split(line, '\t', parts);
-//        SPXExpiriesMkt.push_back(a);
-//        SPXStrikesMkt.push_back(b);
-//        SPXPricesMkt.push_back(c);
-//    }
-//
-//    while (std::getline(inputVIX, line))
-//    {
-//        std::istringstream iss(line);
-//        double a, b, c;
-//        if (!(iss >> a >> b >> c)) { break; }
-//        VIXExpiriesMkt.push_back(a);
-//        VIXStrikesMkt.push_back(b);
-//        VIXPricesMkt.push_back(c);
-//    }
-//    std::vector<std::string> SPXOptionType(SPXStrikesMkt.size(), "C");
-//    for (int i = 0; i < SPXOptionType.size(); ++i)
-//    {
-//        if (i % 5 == 0 or i % 5 == 1)
-//            SPXOptionType[i] = "P";
-//    }
-//
-//    // These ones have to be updated "manually".
-//    double S0Mkt = 3968.94;
-//
-//    double val;
-//    while (inputSPXRates >> val)
-//        SPXRates.push_back(val);
-//
-//    while (inputVIXRates >> val)
-//        VIXRates.push_back(val);
-//
-//    for (int i = 0; i < SPXRates.size(); ++i) {
-//        if (i % 5 == 0)
-//            SPXRates[i] = SPXRates[i+2];
-//        if (i % 5 == 1)
-//            SPXRates[i] = SPXRates[i+1];
-//    }
-//
-//    Calibration marketDisp(SPXStrikesMkt, SPXExpiriesMkt, SPXPricesMkt, SPXRates,
-//                            VIXStrikesMkt, VIXExpiriesMkt, VIXPricesMkt, VIXRates, SPXOptionType,
-//                                  S0Mkt, 100, true);
+    std::vector<double>  // CMTDates = {0,0.083333333,0.166666667,0.25,0.5,1,2},
+            // CMTRates = {0.01,	0.01, 0.02,	0.02,	0.06,	0.07,	0.15},
+            SPXStrikesMkt, SPXExpiriesMkt, SPXPricesMkt, SPXRates,
+            VIXStrikesMkt, VIXExpiriesMkt, VIXPricesMkt, VIXRates;
+
+    // get data from files:
+    std::ifstream inputSPX ("SPXData.txt"),
+        inputVIX("VIXData.txt"), inputSPXRates("ratesSPX.txt"), inputVIXRates("ratesVIX.txt");
+
+    std::string line;
+    while (std::getline(inputSPX, line))
+    {
+        std::istringstream iss(line);
+        double a, b, c;
+        if (!(iss >> a >> b >> c)) { break; }
+//        std::vector<double> parts;
+//        split(line, '\t', parts);
+        SPXExpiriesMkt.push_back(a);
+        SPXStrikesMkt.push_back(b);
+        SPXPricesMkt.push_back(c);
+    }
+
+    while (std::getline(inputVIX, line))
+    {
+        std::istringstream iss(line);
+        double a, b, c;
+        if (!(iss >> a >> b >> c)) { break; }
+        VIXExpiriesMkt.push_back(a);
+        VIXStrikesMkt.push_back(b);
+        VIXPricesMkt.push_back(c);
+    }
+    std::vector<std::string> SPXOptionType(SPXStrikesMkt.size(), "C");
+    for (int i = 0; i < SPXOptionType.size(); ++i)
+    {
+        if (i % 5 == 0 or i % 5 == 1)
+            SPXOptionType[i] = "P";
+    }
+
+    // These ones have to be updated "manually".
+    double S0Mkt = 3968.94;
+
+    double val;
+    while (inputSPXRates >> val)
+        SPXRates.push_back(val);
+
+    while (inputVIXRates >> val)
+        VIXRates.push_back(val);
+
+    for (int i = 0; i < SPXRates.size(); ++i) {
+        if (i % 5 == 0)
+            SPXRates[i] = SPXRates[i+2];
+        if (i % 5 == 1)
+            SPXRates[i] = SPXRates[i+1];
+    }
+
+    Calibration marketDisp(SPXStrikesMkt, SPXExpiriesMkt, SPXPricesMkt, SPXRates,
+                            VIXStrikesMkt, VIXExpiriesMkt, VIXPricesMkt, VIXRates, SPXOptionType,
+                                  S0Mkt, 100, true);
+
+    // save times and deltaTimes:
+    std::ofstream outParamsHpp("timesHeston++.txt");
+    for (const auto &e : marketDisp.deltaTimes) {
+        outParamsHpp << e << ",";
+    }
+    outParamsHpp << "\n";
+    for (const auto &e : marketDisp.SPX_options[1].times) {
+        outParamsHpp << e << ",";
+    }
+
+
 //
 //    calibrateMarketData(marketDisp, initialGuess);
 //    std::vector<double> bestParams = marketDisp.searchParameters;
+
 //    double currentMin = marketDisp.info[1];
 //
 //    for (int i = 0; i < 10; ++i) {
@@ -253,13 +296,14 @@ int main()
 //    for (const auto &e : bestParams) {
 //        outParamsHpp << e << "\n";
 //    }
-//
+
 //    Calibration marketNoDisp(SPXStrikesMkt, SPXExpiriesMkt, SPXPricesMkt, SPXRates,
 //                           VIXStrikesMkt, VIXExpiriesMkt, VIXPricesMkt, VIXRates, SPXOptionType,
 //                           S0Mkt, 100, false);
 //
+//    initialGuess[2] = -1;
 //    calibrateMarketData(marketNoDisp, initialGuess);
-//    bestParams = marketNoDisp.searchParameters;
+//    auto bestParams = marketNoDisp.searchParameters;
 //    currentMin = marketNoDisp.info[1];
 //
 //    for (int i = 0; i < 10; ++i) {
@@ -270,14 +314,14 @@ int main()
 //            currentMin = marketNoDisp.info[1];
 //        }
 //    }
-//    // save result:
+    // save result:
 //    double array2[bestParams.size()];
 //    for (int i = 0; i < bestParams.size(); ++i) {
 //        array2[i] = bestParams[i];
 //    }
-//
+////
 //    marketNoDisp.setParameters(array2);
-//    prices = marketNoDisp.Prices();
+//    auto prices = marketNoDisp.Prices();
 //    std::ofstream outPricesH("hestonPrices.txt");
 //    for (const auto &e : prices)
 //    {

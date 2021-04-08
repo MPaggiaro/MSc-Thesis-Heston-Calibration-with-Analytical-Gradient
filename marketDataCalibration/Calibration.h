@@ -17,14 +17,15 @@ public:
     std::vector<SPXOption> SPX_options;
     std::vector<VIXOption> VIX_options;
 
-    std::vector<double> marketPrices, calibratedPrices;
+    std::vector<double> marketPrices, initialPrices, calibratedPrices;
     // Parameters for the levmar algorithm:
     std::vector<double> info, opts;
     double startClock = 0.0, stopClock = 0.0;
     int maxIterations = 35;
+    std::vector<std::vector<double>> infoValidation;
 
     // parameter sets for the levmar calibration:
-    std::vector<double> searchParameters;
+    std::vector<double> searchParameters, initialParameters;
     std::vector<double> marketParameters;
     int nParameters;
 
@@ -52,7 +53,7 @@ public:
     void setParameters (const double *parameters);
     void setMarketParameters(const double *parameters);
     void setTermStructure(const std::vector<double> &SPX_maturities,const std::vector<double> &VIX_maturities);
-    void saveCalibration (const double *parameters, const double *information);
+    void saveCalibration (const double *initialParametersArray, const double *parameters, const double *information);
     unsigned size() const;
 
     // static std::vector<double> IntegralDisplacement() ;
@@ -65,7 +66,7 @@ public:
     std::vector<double> SPX_Gradients() const;
     std::vector<double> VIX_Gradients() const;
 
-    void print(const double *initialGuess) const;
+    void print() const;
 };
 
 // void computePrices(double *parameters, double *prices, int m, int n, void *data);
@@ -78,7 +79,7 @@ void calibrateMarketData (Calibration &calibration, const double *initialGuess, 
                 const std::string &gradientType = "Analytical");
 
 
-void testModel (Calibration &calibration, int nIterations, const std::string &gradientType = "Analytical");
+void testModel (Calibration &calibration, int nIterations = 35, const std::string &gradientType = "Analytical");
 
 // void perturbPrices(double *prices, int size);
 void generateGuess(double *parameters, int size);

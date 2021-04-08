@@ -17,7 +17,7 @@ Calibration::Calibration(const std::vector<double> &strikes,
                          double q ): nParameters((int)nParameters)
 {
     opts.resize(LM_OPTS_SZ), info.resize(LM_INFO_SZ);
-    opts[0] = 1e-5; //LM_INIT_MU;
+    opts[0] = 1e-5;
     // stopping thresholds for
     opts[1] = 1E-10;       // ||J^T e||_inf
     opts[2] = 1E-10;       // ||Dp||_2
@@ -92,7 +92,10 @@ Calibration::Calibration(const std::vector<double> &SPX_strikes, const std::vect
 {
     // get settings for calibration:
     opts.resize(LM_OPTS_SZ), info.resize(LM_INFO_SZ);
-    opts[0] = LM_INIT_MU;
+    if (displacementFlag)
+        opts[0] = 1e-5;
+    else
+        opts[0] = LM_INIT_MU;
     // stopping thresholds for
     opts[1] = 1E-10;       // ||J^T e||_inf
     opts[2] = 1E-10;       // ||Dp||_2
@@ -206,20 +209,26 @@ std::vector<double> Calibration::Gradients() const
     return gradients;
 }
 
-void Calibration::saveCalibration(const double *parameters, const double *information)
+void Calibration::saveCalibration(const double *initialParametersArray,
+                                  const double *parameters, const double *information)
 {
     // Save calibration results:
     for (int i = 0; i < info.size(); ++i) {
         info[i] = information[i];
     }
+    // save initial and found parameters:
     searchParameters.resize(marketParameters.size());
+    initialParameters.resize(marketParameters.size());
     for (int i = 0; i < searchParameters.size(); ++i) {
         searchParameters[i] = parameters[i];
+    }
+    for (int i = 0; i < initialParameters.size(); ++i) {
+        initialParameters[i] = initialParametersArray[i];
     }
     calibratedPrices = Prices();
 }
 
-void Calibration::print(const double *initialGuess) const
+void Calibration::print() const
 {
     std::cout << "-------- -------- -------- Heston Model Calibrator -------- -------- --------" << std::endl;
     // To be continued ...
@@ -249,7 +258,7 @@ void Calibration::print(const double *initialGuess) const
     {
         std::cout << sep << std::setw(column_width) << parameterNames[i]
                   << std::scientific << std::setprecision(8)
-                  << sep << std::setw(column_width) << initialGuess[i]
+                  << sep << std::setw(column_width) << initialParameters[i]
                   << sep << std::setw(column_width) << searchParameters[i]
                   << sep << std::setw(column_width) << (!marketParameters.empty() ? marketParameters[i] : 0)
                   << sep << '\n';
@@ -508,6 +517,11 @@ void calibrate(Calibration &calibration, const double *initialGuess, int maxIter
     for (int i = 0; i < calibration.marketParameters.size(); ++i)
     // upper and lower bound for correlation:
     lowerBound[2] = -1; upperBound[2] = 1;
+    // kappa cannot be exactly zero:
+    lowerBound[0] = lowerBound[1] = lowerBound[3] = lowerBound[4] = 1e-4;
+
+    if (calibration.nParameters == 5)
+        calibration.opts[0] = LM_INIT_MU;
 
     if (gradientType == "Analytical")
         dlevmar_bc_der(objectiveFunction, gradientObjective, p, nullptr, (int) calibration.marketParameters.size(),
@@ -522,18 +536,18 @@ void calibrate(Calibration &calibration, const double *initialGuess, int maxIter
 
     calibration.stopClock = clock();
     // save calibration results:
-    calibration.saveCalibration(p, info);
+    calibration.saveCalibration(initialGuess,p, info);
     // reset market parameters back to start:
     calibration.setParameters(marketParameters);
     // Print calibration result:
-    calibration.print(initialGuess);
+    calibration.print();
 }
 
 void calibrateMarketData (Calibration &calibration, const double *initialGuess, bool perturbation,
                           const std::string &gradientType)
 {
     // algorithm parameters:
-    int itMax = 100;
+    int itMax = 500;
     double opts[LM_OPTS_SZ], info[LM_INFO_SZ];
     for (int i = 0; i < calibration.opts.size(); ++i)
     {
@@ -558,6 +572,8 @@ void calibrateMarketData (Calibration &calibration, const double *initialGuess, 
 
     // upper and lower bound for correlation:
     lowerBound[2] = -1; upperBound[2] = 1;
+    if (calibration.nParameters == 5)
+        upperBound[2] = 1;
     // kappa cannot be exactly zero:
     lowerBound[0] = lowerBound[1] = lowerBound[3] = lowerBound[4] = 1e-4;
 
@@ -574,16 +590,16 @@ void calibrateMarketData (Calibration &calibration, const double *initialGuess, 
 
     calibration.stopClock = clock();
     // save calibration results:
-    calibration.saveCalibration(p, info);
+    calibration.saveCalibration(initialGuess,p, info);
     // Print calibration result:
-    calibration.print(initialGuess);
+    calibration.print();
 }
 
 void testModel (Calibration &calibration, int nIterations, const std::string &gradientType)
 {
     int countSuccessfulCalibrations = 0;
-
     int countWrongMinimaFound = 0;
+    int countChangedSimulations = 0;
 
     double marketParameters[calibration.marketParameters.size()],
         initialGuess[calibration.marketParameters.size()];
@@ -598,23 +614,37 @@ void testModel (Calibration &calibration, int nIterations, const std::string &gr
         calibration.setMarketParameters(marketParameters);
         calibrate(calibration, initialGuess, 35, false, gradientType);
 
+        bool flagCount = false;
         while (calibration.info[6] == 7 or calibration.info[6] == 3)
         {
+            if (!flagCount){
+                countChangedSimulations++;
+                flagCount = true;
+            }
             countWrongMinimaFound ++;
             // slow convergence: let's change initial guess.
             std::cout << "Possible local minimum. Let's change initial point." << std::endl;
             generateGuess(initialGuess, (int) calibration.marketParameters.size());
             calibrate(calibration, initialGuess, 35, false, gradientType);
         }
-
         // See if the calibration was successful.
-        if (calibration.info[6] == 6)
+        if (calibration.info[6] == 6){
             countSuccessfulCalibrations++;
+            std::vector<double> absoluteDifference (calibration.searchParameters.size());
+            for (int j = 0; j < absoluteDifference.size(); ++j) {
+                absoluteDifference[j] = std::abs(calibration.searchParameters[j] - calibration.marketParameters[j]);
+            }
+            absoluteDifference.insert(absoluteDifference.end(), calibration.info.begin(),
+                                      calibration.info.end());
+            calibration.infoValidation.push_back(absoluteDifference);
+        }
     }
     std::cout << countSuccessfulCalibrations << " successful calibrations out of "
               << nIterations << " simulations." << std::endl;
 
-    std::cout << "Initial point changed " << countWrongMinimaFound << " times." <<std::endl;
+    std::cout << "Initial point changed in " << countChangedSimulations
+        << " simulations out of " << nIterations << ", for a total of "
+        << countWrongMinimaFound << " times." <<std::endl;
 }
 
 void generateGuess(double *parameters, int size)
@@ -634,10 +664,7 @@ void generateGuess(double *parameters, int size)
             parameters[j] = 0.5 + 4.5 * uniform(generator);
         else // displacement vector:
         {
-
             parameters[j] = 8e-4 * uniform(generator);
-
-
         }
     }
 }

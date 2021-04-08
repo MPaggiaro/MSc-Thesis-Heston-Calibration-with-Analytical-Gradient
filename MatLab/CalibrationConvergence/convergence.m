@@ -9,7 +9,7 @@ hData = ...
 
 hppData = readmatrix('convergenceH++.csv');
 
-%% 3. Get data:
+%% 2. Compute data:
 it = (0:size(hData,1)-2)';
 itPp = (0:size(hppData,1)-3)';
 
@@ -32,15 +32,19 @@ for i = 1:length(deltaPhi)
    deltaPhi(i) = sqrt(sum((hppData(end,6:end-2).*(hppData(i,6:end-2)- hppData(end-1,6:end-2))).^2)); 
 end
 
-%% 2. Plot the convergence of H:
+%% Get vector for differences of cases:
+absInfoH = abs(hData(end-1,1:5)-hData(end,1:5));
+absInfoHp = abs(hData(end-2,1:5)-hData(end-1,1:5));
+absInfoHp = [absInfoHp, deltaPhi(end)];
 
-figure('Position', [100 100 800 600]);
+
+%% 3. Plot the convergence of H:
+
+figure('Position', [100 100 800 500]);
 
 t = tiledlayout(1,2);
 t.Padding = 'compact';
 t.TileSpacing = 'compact';
-title(t, 'Convergenza dell''algoritmo LM nel modello $\mathcal{H}$', 'Interpreter','latex',...
-    'FontSize', 20, 'FontWeight', 'bold')
 
 nexttile;
 hold on;
@@ -56,13 +60,13 @@ hKappa = plot(it, kappa, '-d');
 hSigma = plot(it, sigma, '-d');
 
 hLegend = legend([hV0, hVBar, hRho, hKappa, hSigma],...
-    '$\left|  \frac{v_{0,i}-v_0^*}{v_0^*}  \right|$',...
-    '$\left|  \frac{\overline{v}_{i}-\overline{v}^*}{\overline{v}^*}  \right|$',...
-    '$\left|  \frac{\rho_i-\rho^*}{\rho^*}  \right|$',...
-    '$\left|  \frac{\kappa_i - \kappa^*}{\kappa^*}  \right|$',...
-    '$\left|  \frac{\sigma_i - \sigma^*}{\sigma^*}  \right|$');
+    '$\left|  \frac{v_{0,i}-v_0}{v_0}  \right|$',...
+    '$\left|  \frac{\overline{v}_{i}-\overline{v}}{\overline{v}}  \right|$',...
+    '$\left|  \frac{\rho_i-\rho}{\rho}  \right|$',...
+    '$\left|  \frac{\kappa_i - \kappa}{\kappa}  \right|$',...
+    '$\left|  \frac{\sigma_i - \sigma}{\sigma}  \right|$');
 
-set(hLegend, 'interpreter', 'latex', 'location', 'southwest', 'FontSize',15);
+set(hLegend, 'interpreter', 'latex', 'location', 'northeast', 'FontSize',12);
 set([hV0, hVBar, hRho, hKappa, hSigma],'lineWidth', 1.5);
 
 set(gca, 'YScale', 'log')
@@ -80,21 +84,19 @@ grid minor
 box off
 hLegend = legend([hR, hTol], '$\left\| \mathbf{r}_i \right\|$',...
     '$\varepsilon_1 = 10^{-10}$');
-set(hLegend, 'interpreter', 'latex', 'location', 'southwest', 'FontSize',15);
+set(hLegend, 'interpreter', 'latex', 'location', 'northeast', 'FontSize',12);
 
 set(gca, 'YScale', 'log')
 set(gca,'FontName','cmr12')
 set(gcf, 'PaperPositionMode', 'auto');
 exportgraphics(gcf,'ConvH.pdf','ContentType','vector')
 
-%% 3: plot the convergence of H++:
-figure('Position', [100 100 800 600]);
+%% 4: plot the convergence of H++:
+figure('Position', [100 100 800 500]);
 
 t = tiledlayout(1,2);
 t.Padding = 'compact';
 t.TileSpacing = 'compact';
-title(t, 'Convergenza dell''algoritmo LM nel modello $\mathcal{H}++$', 'Interpreter','latex',...
-    'FontSize', 20)
 
 nexttile;
 hold on;
@@ -103,25 +105,27 @@ ylabel ('Errore relativo', 'Interpreter', 'latex')
 grid on
 grid minor
 
-hV0 = plot(it, v0, '-d');
-hVBar = plot(it, v_bar, '-d');
-hRho = plot(it, rho, '-d');
-hKappa = plot(it, kappa, '-d');
-hSigma = plot(it, sigma, '-d');
+hV0 = plot(itPp, v0Pp, '-d');
+hVBar = plot(itPp, v_barPp, '-d');
+hRho = plot(itPp, rhoPp, '-d');
+hKappa = plot(itPp, kappaPp, '-d');
+hSigma = plot(itPp, sigmaPp, '-d');
+hDisp = plot (itPp, deltaPhi, '-d');
 
-hLegend = legend([hV0, hVBar, hRho, hKappa, hSigma],...
-    '$\left|  \frac{v_{0,i}-v_0^*}{v_0^*}  \right|$',...
-    '$\left|  \frac{\overline{v}_{i}-\overline{v}^*}{\overline{v}^*}  \right|$',...
-    '$\left|  \frac{\rho_i-\rho^*}{\rho^*}  \right|$',...
-    '$\left|  \frac{\kappa_i - \kappa^*}{\kappa^*}  \right|$',...
-    '$\left|  \frac{\sigma_i - \sigma^*}{\sigma^*}  \right|$');
+hLegend = legend([hV0, hVBar, hRho, hKappa, hSigma, hDisp],...
+    '$\left|  \frac{v_{0,i}-v_0}{v_0}  \right|$',...
+    '$\left|  \frac{\overline{v}_{i}-\overline{v}}{\overline{v}}  \right|$',...
+    '$\left|  \frac{\rho_i-\rho}{\rho}  \right|$',...
+    '$\left|  \frac{\kappa_i - \kappa}{\kappa}  \right|$',...
+    '$\left|  \frac{\sigma_i - \sigma}{\sigma}  \right|$',...
+     '$\left\| \Delta\Phi_i - \Delta\Phi \right\|_2$'   );
 
-set(hLegend, 'interpreter', 'latex', 'location', 'southwest', 'FontSize',15);
-set([hV0, hVBar, hRho, hKappa, hSigma],'lineWidth', 1.5);
+set(hLegend, 'interpreter', 'latex', 'location', 'northeast', 'FontSize',11);
+set([hV0, hVBar, hRho, hKappa, hSigma, hDisp],'lineWidth', 1.5);
 
 set(gca, 'YScale', 'log')
 nexttile;
-hR = plot(it, r, '-dk', 'lineWidth', 1.5);
+hR = plot(itPp, rPp, '-dk', 'lineWidth', 1.5);
 hTol = yline(1e-10, '--', 'lineWidth', 1.2);
 set (hTol, 'Color', [0 .5 0]);
 
@@ -129,9 +133,10 @@ xlabel ('Iterazione', 'Interpreter', 'latex')
 ylabel ('Residuo', 'Interpreter', 'latex')
 grid on
 grid minor
+box off
 hLegend = legend([hR, hTol], '$\left\| \mathbf{r}_i \right\|$',...
     '$\varepsilon_1 = 10^{-10}$');
-set(hLegend, 'interpreter', 'latex', 'location', 'southwest', 'FontSize',15);
+set(hLegend, 'interpreter', 'latex', 'location', 'northeast', 'FontSize',12);
 
 set(gca, 'YScale', 'log')
 set(gcf, 'PaperPositionMode', 'auto');
